@@ -59,7 +59,33 @@ def display_books():
         books_list.append(book_data)
     return books_list
 
-       
+def update_book():
+    data = request.get_json()
+    id_to_update = data.get('id')
+    new_bookName = data.get('name')
+    new_bookAuthor = data.get('author')
+    new_yearPublished = data.get('yearPublished')
+    new_bookType = data.get('type')
+
+    book = db_session.query(Book).get(id_to_update)
+
+    book.name = new_bookName if new_bookName else book.name
+    book.author = new_bookAuthor if new_bookAuthor else book.author
+    book.new_yearPublished = new_yearPublished if new_yearPublished else book.yearPublished
+    book.type = BookType(new_bookType) if new_bookType else book.type
+
+    db_session.commit()
+    
+def delete_book():
+    data = request.get_json()
+    id_to_delete = data.get('id')
+    book = db_session.query(Book).get(id_to_delete)
+    
+    print(book)
+    book.available = False
+    db_session.commit()
+
+     
 @app.route('/books',methods=['GET','POST','DELETE','PUT'])
 def manageBooks():
     if request.method == 'GET':
@@ -78,33 +104,12 @@ def manageBooks():
         return jsonify({"message": "New book added"}), 201
     
     if request.method == 'PUT':
-        data = request.get_json()
-        id_to_update = data.get('id')
-        new_bookName = data.get('name')
-        new_bookAuthor = data.get('author')
-        new_yearPublished = data.get('yearPublished')
-        new_bookType = data.get('type')
 
-        book = db_session.query(Book).get(id_to_update)
-
-        book.name = new_bookName if new_bookName else book.name
-        book.author = new_bookAuthor if new_bookAuthor else book.author
-        book.new_yearPublished = new_yearPublished if new_yearPublished else book.yearPublished
-        book.type = BookType(new_bookType) if new_bookType else book.type
-
-        db_session.commit()
+        update_book()
         return jsonify({"message": "Book updated successfully!"}), 200
     
     if request.method== 'DELETE':
-
-        data = request.get_json()
-        id_to_delete = data.get('id')
-        book = db_session.query(Book).get(id_to_delete)
-        
-        print(book)
-        book.available = False
-        db_session.commit()
-
+        delete_book()
         return jsonify({"message": "Book Changed to unavailable (deleted)"}), 200
 
 
