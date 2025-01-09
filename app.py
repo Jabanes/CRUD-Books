@@ -19,7 +19,7 @@ class BookType(PyEnum):
 class Book(Base):
     __tablename__ = 'books'
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), unique=True)
+    name = Column(String(50), unique=False)
     author = Column(String(120), unique=False)
     yearPublished = Column(Integer, unique=False)
     type = Column(Enum(BookType), nullable=False)
@@ -76,6 +76,37 @@ def manageBooks():
         add_new_book(bookName, bookAuthor, yearPublished, bookType)
 
         return jsonify({"message": "New book added"}), 201
+    
+    if request.method == 'PUT':
+        data = request.get_json()
+        id_to_update = data.get('id')
+        new_bookName = data.get('name')
+        new_bookAuthor = data.get('author')
+        new_yearPublished = data.get('yearPublished')
+        new_bookType = data.get('type')
+
+        book = db_session.query(Book).get(id_to_update)
+
+        book.name = new_bookName if new_bookName else book.name
+        book.author = new_bookAuthor if new_bookAuthor else book.author
+        book.new_yearPublished = new_yearPublished if new_yearPublished else book.yearPublished
+        book.type = BookType(new_bookType) if new_bookType else book.type
+
+        db_session.commit()
+        return jsonify({"message": "Book updated successfully!"}), 200
+    
+    if request.method== 'DELETE':
+
+        data = request.get_json()
+        id_to_delete = data.get('id')
+        book = db_session.query(Book).get(id_to_delete)
+        
+        print(book)
+        book.available = False
+        db_session.commit()
+
+        return jsonify({"message": "Book Changed to unavailable (deleted)"}), 200
+
 
 if __name__ == "__main__":
     app.run(debug=True)
