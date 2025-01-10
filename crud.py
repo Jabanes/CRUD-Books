@@ -5,6 +5,7 @@ from db import db_session
 manage_books = Blueprint('manage_books', __name__)
 manage_customers = Blueprint('manage_customers', __name__)
 
+#CRUD BOOKS
 def add_new_book(bookName, bookAuthor, yearPublished, bookType):
     new_book = Book(name=bookName, author=bookAuthor, yearPublished=yearPublished, type=BookType(bookType))
     db_session.add(new_book)
@@ -47,10 +48,11 @@ def delete_book():
     id_to_delete = data.get('id')
     book = db_session.query(Book).get(id_to_delete)
     
-    print(book)
     book.available = False
     db_session.commit()
+#-------------------------------------
 
+#CRUD CUSTOMERS
 def add_new_customer(customer_name, customer_city, customer_age):
     new_customer = Customer(name=customer_name, city=customer_city, age=customer_age)
     db_session.add(new_customer)
@@ -69,6 +71,31 @@ def display_customers():
         }
         customers_list.append(customer_data)
     return customers_list
+
+def update_customer():
+    data = request.get_json()
+    id_to_update = data.get('id')
+    new_customer_name = data.get('name')
+    new_customer_city = data.get('city')
+    new_customer_age = data.get('age')
+    
+
+    customer = db_session.query(Customer).get(id_to_update)
+
+    customer.name = new_customer_name if new_customer_name else customer.name
+    customer.city = new_customer_city if new_customer_city else customer.author
+    customer.age = new_customer_age if new_customer_age else customer.yearPublished
+
+    db_session.commit()
+
+def delete_customer():
+    data = request.get_json()
+    id_to_delete = data.get('id')
+    customer = db_session.query(Customer).get(id_to_delete)
+    
+    customer.active = False
+    db_session.commit()
+#---------------------------------------
 
 @manage_books.route('/books',methods=['GET','POST','DELETE','PUT'])
 def manageBooks():
@@ -112,11 +139,10 @@ def manageCustomers():
         return jsonify({"message": "New Customer was added"}), 201
     
     if request.method == 'PUT':
-
-        update_book()
-        return jsonify({"message": "Book updated successfully!"}), 200
+        update_customer()
+        return jsonify({"message": "Customer was updated successfully!"}), 200
     
     if request.method== 'DELETE':
-        delete_book()
-        return jsonify({"message": "Book Changed to unavailable (deleted)"}), 200
+        delete_customer()
+        return jsonify({"message": "Customer's Status changed to innactive"}), 200
     
