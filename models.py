@@ -16,11 +16,16 @@ class Book(Base):
     type = Column(Enum(BookType), nullable=False)
     available = Column(Boolean, default=True)
 
-def __init__(self, name=None, author=None, yearPublished=None, type=None):
-        self.name = name
-        self.author = author
-        self.yearPublished = yearPublished
-        self.type = BookType(type)
+def __repr__(self):
+    return f'<Book {self.name!r},Author {self.author!r}, ({self.yearPublshed!r}) >'
+        
+class Customer(Base):
+    __tablename__ = 'customers'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), unique=False)
+    city = Column(String(120), unique=False)
+    age = Column(Integer, unique=False)
+    active = Column(Boolean, default=True) 
 
 def __repr__(self):
-        return f'<Book {self.name!r},Author {self.author!r}, ({self.yearPublished!r}) >'
+    return f'<Name {self.name!r},City {self.city!r}, Age {self.age!r} >'
