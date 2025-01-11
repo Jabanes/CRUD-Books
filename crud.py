@@ -105,16 +105,25 @@ def delete_customer():
 #loan a book - dynamic return date based on book type. change availablity to False
 def loan_book(customer_id, book_id, loan_date, return_date):
     
-    loan_date = datetime.strptime(loan_date, '%Y-%m-%d',).date()
-    return_date = datetime.strptime(return_date, '%Y-%m-%d').date()
+    loan_date = datetime.strptime(loan_date, '%m-%d-%Y',).date()
+    return_date = datetime.strptime(return_date, '%m-%d-%Y').date()
 
-    new_loan = Loan(customer_id=customer_id, book_id=book_id, loan_date=loan_date, return_date=return_date)
+    
+    loaned_book = db_session.query(Book).filter_by(id=book_id).first()
 
-    db_session.add(new_loan)
-    db_session.commit()
+    if loaned_book:
+        loaned_book.available = False
 
-#display loaned books - display only the books with the availability of False
-def display_loaned_books():
+        new_loan = Loan(customer_id=customer_id, book_id=book_id, loan_date=loan_date, return_date=return_date)
+        db_session.add(loaned_book)
+        db_session.add(new_loan)
+        db_session.commit()
+
+    else:
+        print("Book was not found")
+
+#display all loans ever made
+def display_all_loans():
     loaned_books = db_session.query(Loan).all()
     loaned_books_list = []
 
@@ -131,11 +140,15 @@ def display_loaned_books():
     return loaned_books_list
 
 
-#display available books - display only the books with availablity of True
+#display available books - #display only loans with is_returned = True
 def display_available_books():
     pass
 
+#display only loans with is_returned = false
+def display_loaned_books():
+    pass
 #return a book - change availablity form fale to true, 
+
 def return_book():
     data = request.get_json()
     loan_id_to_return = data.get('loan_id')
@@ -209,7 +222,7 @@ def manageCustomers():
 def manageLoans():
     if request.method == 'GET':
         #display all loans
-        loaned_books = display_loaned_books()
+        loaned_books = display_all_loans()
         return jsonify(loaned_books)
 
     if request.method == 'POST':
