@@ -35,6 +35,7 @@ class Loan(Base):
     loan_id = Column(Integer, primary_key=True)
     customer_id = Column(Integer, unique=False)
     book_id = Column(Integer, unique=False)
-    loan_date = Column(Date, unique=False)
-    return_date = Column(Date, unique=False) 
+    loan_date = Column(Date, nullable=False)
+    return_date = Column(Date, nullable=False)
+    is_returned =  Column(Boolean, default=False)
 
