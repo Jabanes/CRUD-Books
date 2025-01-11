@@ -105,17 +105,31 @@ def delete_customer():
 #loan a book - dynamic return date based on book type. change availablity to False
 def loan_book(customer_id, book_id, loan_date, return_date):
     
-    loan_date = datetime.strptime(loan_date, '%Y-%m-%d').date()
+    loan_date = datetime.strptime(loan_date, '%Y-%m-%d',).date()
     return_date = datetime.strptime(return_date, '%Y-%m-%d').date()
 
     new_loan = Loan(customer_id=customer_id, book_id=book_id, loan_date=loan_date, return_date=return_date)
 
     db_session.add(new_loan)
-    db_session.commit
+    db_session.commit()
 
 #display loaned books - display only the books with the availability of False
 def display_loaned_books():
-    pass
+    loaned_books = db_session.query(Loan).all()
+    loaned_books_list = []
+
+    for loan in loaned_books:
+        loaned_books_data = {
+            "loan_id": loan.loan_id, 
+            "customer_id": loan.customer_id,
+            "book_id" : loan.book_id,
+            "loan_date": loan.loan_date,
+            "return_date": loan.return_date,
+            "is_returned" : loan.is_returned
+        }
+        loaned_books_list.append(loaned_books_data)
+    return loaned_books_list
+
 
 #display available books - display only the books with availablity of True
 def display_available_books():
@@ -123,7 +137,12 @@ def display_available_books():
 
 #return a book - change availablity form fale to true, 
 def return_book():
-    pass
+    data = request.get_json()
+    loan_id_to_return = data.get('loan_id')
+    loan = db_session.query(Loan).get(loan_id_to_return)
+    
+    loan.is_returned = True
+    db_session.commit()
 
 #display all late loans - display all the loans that have surpassed their maximum days to loan 
 def display_late_loans():
@@ -190,7 +209,9 @@ def manageCustomers():
 def manageLoans():
     if request.method == 'GET':
         #display all loans
-        pass
+        loaned_books = display_loaned_books()
+        return jsonify(loaned_books)
+
     if request.method == 'POST':
         #loan a book
         data = request.get_json()
@@ -199,10 +220,12 @@ def manageLoans():
         loan_date = data.get('loan_date')
         return_date = data.get('return_date')
 
+        print(f'loaned: {customer_id, book_id, loan_date, return_date}')
         loan_book(customer_id, book_id, loan_date, return_date)
 
         return jsonify({"message": "New loan was added"}), 201
 
     if request.method == 'DELETE':
-        #return a book
-        pass
+        return_book()
+        return jsonify({"message": "Loan was returned successfully!"}, 201)
+       
