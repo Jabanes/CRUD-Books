@@ -1,9 +1,13 @@
 from flask import Blueprint, jsonify, request
 from models import *
 from db import db_session 
+from datetime import datetime
 
+home_page = Blueprint('home_page', __name__)
 manage_books = Blueprint('manage_books', __name__)
 manage_customers = Blueprint('manage_customers', __name__)
+manage_loans = Blueprint('manage_loans', __name__)
+
 
 #CRUD BOOKS
 def add_new_book(bookName, bookAuthor, yearPublished, bookType):
@@ -97,6 +101,42 @@ def delete_customer():
     db_session.commit()
 #---------------------------------------
 
+#CRUD LOANS
+#loan a book - dynamic return date based on book type. change availablity to False
+def loan_book(customer_id, book_id, loan_date, return_date):
+    
+    loan_date = datetime.strptime(loan_date, '%Y-%m-%d').date()
+    return_date = datetime.strptime(return_date, '%Y-%m-%d').date()
+
+    new_loan = Loan(customer_id=customer_id, book_id=book_id, loan_date=loan_date, return_date=return_date)
+
+    db_session.add(new_loan)
+    db_session.commit
+
+#display loaned books - display only the books with the availability of False
+def display_loaned_books():
+    pass
+
+#display available books - display only the books with availablity of True
+def display_available_books():
+    pass
+
+#return a book - change availablity form fale to true, 
+def return_book():
+    pass
+
+#display all late loans - display all the loans that have surpassed their maximum days to loan 
+def display_late_loans():
+    pass
+
+
+
+
+
+@home_page.route('/')
+def homePage():
+    return 'HOME PAGE'
+
 @manage_books.route('/books',methods=['GET','POST','DELETE','PUT'])
 def manageBooks():
     if request.method == 'GET':
@@ -145,4 +185,24 @@ def manageCustomers():
     if request.method== 'DELETE':
         delete_customer()
         return jsonify({"message": "Customer's Status changed to innactive"}), 200
-    
+
+@manage_loans.route('/loans', methods=['GET', 'POST', 'DELETE'])
+def manageLoans():
+    if request.method == 'GET':
+        #display all loans
+        pass
+    if request.method == 'POST':
+        #loan a book
+        data = request.get_json()
+        customer_id = data.get('customer_id')
+        book_id = data.get('book_id')
+        loan_date = data.get('loan_date')
+        return_date = data.get('return_date')
+
+        loan_book(customer_id, book_id, loan_date, return_date)
+
+        return jsonify({"message": "New loan was added"}), 201
+
+    if request.method == 'DELETE':
+        #return a book
+        pass

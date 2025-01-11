@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Enum, Boolean
+from sqlalchemy import Column, Integer, String, Enum, Boolean, Date
 from db import Base
 from enum import Enum as PyEnum
 
@@ -29,3 +29,12 @@ class Customer(Base):
 
 def __repr__(self):
     return f'<Name {self.name!r},City {self.city!r}, Age {self.age!r} >'
+
+class Loan(Base):
+    __tablename__ = 'loans'
+    loan_id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, unique=False)
+    book_id = Column(Integer, unique=False)
+    loan_date = Column(Date, unique=False)
+    return_date = Column(Date, unique=False) 
+
