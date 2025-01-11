@@ -105,8 +105,8 @@ def delete_customer():
 #loan a book - dynamic return date based on book type. change availablity to False
 def loan_book(customer_id, book_id, loan_date, return_date):
     
-    loan_date = datetime.strptime(loan_date, '%m-%d-%Y',).date()
-    return_date = datetime.strptime(return_date, '%m-%d-%Y').date()
+    loan_date = datetime.strptime(loan_date, '%d-%m-%Y',).date()
+    return_date = datetime.strptime(return_date, '%d-%m-%Y').date()
 
     
     loaned_book = db_session.query(Book).filter_by(id=book_id).first()
@@ -153,7 +153,10 @@ def return_book():
     data = request.get_json()
     loan_id_to_return = data.get('loan_id')
     loan = db_session.query(Loan).get(loan_id_to_return)
-    
+
+    book_to_return = db_session.query(Book).get(loan.book_id)
+    book_to_return.available = True
+
     loan.is_returned = True
     db_session.commit()
 
