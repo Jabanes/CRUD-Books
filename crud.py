@@ -7,7 +7,7 @@ home_page = Blueprint('home_page', __name__)
 manage_books = Blueprint('manage_books', __name__)
 manage_customers = Blueprint('manage_customers', __name__)
 manage_loans = Blueprint('manage_loans', __name__)
-display_loans = Blueprint('display_loans', __name__)
+
 
 #CRUD BOOKS
 def add_new_book(bookName, bookAuthor, yearPublished, bookType):
@@ -30,7 +30,6 @@ def display_all_books():
         books_list.append(book_data)
     return books_list
 
-#display available books - #display only loans with is_returned = True
 def display_available_books():
     available_books = db_session.query(Book).filter_by(available = True).all()
     available_books_list = []
@@ -93,7 +92,7 @@ def add_new_customer(customer_name, customer_city, customer_age):
     db_session.add(new_customer)
     db_session.commit()
 
-def display_customers():
+def display_all_customers():
     customers = db_session.query(Customer).all()
     customers_list = []
     for customer in customers:
@@ -106,6 +105,35 @@ def display_customers():
         }
         customers_list.append(customer_data)
     return customers_list
+
+def display_active_customers():
+    active_customers = db_session.query(Customer).filter_by(active=True).all()
+    active_customers_list = []
+    for customer in active_customers:
+        customer_data = {
+            "id": customer.id,
+            "name": customer.name,
+            "city" : customer.city,
+            "age": customer.age,
+            "active": customer.active
+        }
+        active_customers_list.append(customer_data)
+    return active_customers_list
+
+def display_inactive_customers():
+    inactive_customers = db_session.query(Customer).filter_by(active=False).all()
+    inactive_customers_list = []
+    for customer in inactive_customers:
+        customer_data = {
+            "id": customer.id,
+            "name": customer.name,
+            "city" : customer.city,
+            "age": customer.age,
+            "active": customer.active
+        }
+        inactive_customers_list.append(customer_data)
+    return inactive_customers_list
+
 
 def update_customer():
     data = request.get_json()
@@ -264,8 +292,20 @@ def manageBooks():
 @manage_customers.route('/customers', methods=['GET','POST','DELETE','PUT'])
 def manageCustomers():
     if request.method == 'GET':
-        customers = display_customers()
-        return jsonify(customers)
+
+        filter_type = request.args.get('filter', 'active')
+        
+        if filter_type == 'active':
+            active_customers = display_active_customers()
+            return jsonify(active_customers)
+        
+        if filter_type == 'inactive':
+            inactive_customers = display_inactive_customers()
+            return jsonify(inactive_customers)
+        
+        if filter_type == 'history':
+            all_customers = display_all_customers()
+            return jsonify(all_customers)
     
     if request.method == 'POST':
         data = request.get_json()
