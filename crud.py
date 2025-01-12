@@ -7,7 +7,7 @@ home_page = Blueprint('home_page', __name__)
 manage_books = Blueprint('manage_books', __name__)
 manage_customers = Blueprint('manage_customers', __name__)
 manage_loans = Blueprint('manage_loans', __name__)
-
+display_loans = Blueprint('display_loans', __name__)
 
 #CRUD BOOKS
 def add_new_book(bookName, bookAuthor, yearPublished, bookType):
@@ -146,9 +146,39 @@ def display_available_books():
 
 #display only loans with is_returned = false
 def display_loaned_books():
-    pass
+    active_loans = db_session.query(Loan).filter_by(is_returned=False).all()
+    active_loans_list = []
+
+    for loan in active_loans:
+        loaned_books_data = {
+            "loan_id": loan.loan_id, 
+            "customer_id": loan.customer_id,
+            "book_id" : loan.book_id,
+            "loan_date": loan.loan_date,
+            "return_date": loan.return_date,
+            "is_returned" : loan.is_returned
+        }
+        active_loans_list.append(loaned_books_data)
+    return active_loans_list
 #return a book - change availablity form fale to true, 
 
+def display_returned_loans():
+    returned_loans = db_session.query(Loan).filter_by(is_returned=True).all()
+    returned_loans_list = []
+
+    for loan in returned_loans:
+        loaned_books_data = {
+            "loan_id": loan.loan_id, 
+            "customer_id": loan.customer_id,
+            "book_id" : loan.book_id,
+            "loan_date": loan.loan_date,
+            "return_date": loan.return_date,
+            "is_returned" : loan.is_returned
+        }
+        returned_loans_list.append(loaned_books_data)
+    return returned_loans_list
+
+    
 def return_book():
     data = request.get_json()
     loan_id_to_return = data.get('loan_id')
@@ -163,10 +193,6 @@ def return_book():
 #display all late loans - display all the loans that have surpassed their maximum days to loan 
 def display_late_loans():
     pass
-
-
-
-
 
 @home_page.route('/')
 def homePage():
@@ -224,9 +250,22 @@ def manageCustomers():
 @manage_loans.route('/loans', methods=['GET', 'POST', 'DELETE'])
 def manageLoans():
     if request.method == 'GET':
-        #display all loans
-        loaned_books = display_all_loans()
-        return jsonify(loaned_books)
+
+        filter_type = request.args.get('filter', 'active') 
+        
+        if filter_type == 'active':
+            active_loans = display_loaned_books()
+            return jsonify(active_loans)
+
+        if filter_type == 'history':
+            loaned_books = display_all_loans()
+            return jsonify(loaned_books)
+
+        if  filter_type == 'returned':
+            returned_loans = display_returned_loans()
+            return jsonify(returned_loans)
+        
+               
 
     if request.method == 'POST':
         #loan a book
@@ -244,4 +283,5 @@ def manageLoans():
     if request.method == 'DELETE':
         return_book()
         return jsonify({"message": "Loan was returned successfully!"}, 201)
-       
+
+
