@@ -15,7 +15,7 @@ def add_new_book(bookName, bookAuthor, yearPublished, bookType):
     db_session.add(new_book)
     db_session.commit()
 
-def display_books():
+def display_all_books():
     books = db_session.query(Book).all()
     books_list = []
     for book in books:
@@ -29,6 +29,37 @@ def display_books():
         }
         books_list.append(book_data)
     return books_list
+
+#display available books - #display only loans with is_returned = True
+def display_available_books():
+    available_books = db_session.query(Book).filter_by(available = True).all()
+    available_books_list = []
+    for book in available_books:
+        book_data = {
+            "id": book.id,
+            "name": book.name,
+            "author": book.author,
+            "yearPublished": book.yearPublished,
+            "type": book.type.value,  
+            "available": book.available
+        }
+        available_books_list.append(book_data)
+    return available_books_list
+
+def display_unavailable_books():
+    unavailable_books = db_session.query(Book).filter_by(available = False).all()
+    unavailable_books_list = []
+    for book in unavailable_books:
+        book_data = {
+            "id": book.id,
+            "name": book.name,
+            "author": book.author,
+            "yearPublished": book.yearPublished,
+            "type": book.type.value,  
+            "available": book.available
+        }
+        unavailable_books_list.append(book_data)
+    return unavailable_books_list
 
 def update_book():
     data = request.get_json()
@@ -139,11 +170,6 @@ def display_all_loans():
         loaned_books_list.append(loaned_books_data)
     return loaned_books_list
 
-
-#display available books - #display only loans with is_returned = True
-def display_available_books():
-    pass
-
 #display only loans with is_returned = false
 def display_loaned_books():
     active_loans = db_session.query(Loan).filter_by(is_returned=False).all()
@@ -201,8 +227,19 @@ def homePage():
 @manage_books.route('/books',methods=['GET','POST','DELETE','PUT'])
 def manageBooks():
     if request.method == 'GET':
-        books = display_books()
-        return jsonify(books)
+        filter_type = request.args.get('filter', 'available')
+
+        if filter_type == 'available':
+            available_books = display_available_books()
+            return jsonify(available_books)
+        
+        if filter_type == 'unavailable':
+            unavalabile_books = display_unavailable_books()
+            return jsonify(unavalabile_books)
+        
+        if filter_type == 'all':
+            books = display_all_books()
+            return jsonify(books)
     
     if request.method == 'POST':
         data = request.get_json()
