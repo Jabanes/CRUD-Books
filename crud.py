@@ -15,6 +15,24 @@ def add_new_book(bookName, bookAuthor, yearPublished, bookType):
     db_session.add(new_book)
     db_session.commit()
 
+def find_book_by_name(book_to_find):
+    book = db_session.query(Book).filter_by(name=book_to_find).first()
+    
+    if book:
+        book_data = {
+            "id": book.id,
+            "name": book.name,
+            "author": book.author,
+            "yearPublished": book.yearPublished,
+            "type": book.type.value,  
+            "available": book.available
+        }
+        return book_data 
+    
+ 
+    return {"message": "Book not found"}
+
+
 def display_all_books():
     books = db_session.query(Book).all()
     books_list = []
@@ -92,6 +110,23 @@ def add_new_customer(customer_name, customer_city, customer_age):
     db_session.add(new_customer)
     db_session.commit()
 
+def find_customer_by_name(customer_to_find):
+    customer = db_session.query(Customer).filter_by(name=customer_to_find).first()
+        
+    if customer:
+        customer_data = {
+            "id": customer.id,
+            "name": customer.name,
+            "city": customer.city,
+            "age": customer.age,
+            "active": customer.active
+        }
+        return customer_data  
+        
+    
+    return {"message": "Customer not found"}
+
+
 def display_all_customers():
     customers = db_session.query(Customer).all()
     customers_list = []
@@ -133,7 +168,6 @@ def display_inactive_customers():
         }
         inactive_customers_list.append(customer_data)
     return inactive_customers_list
-
 
 def update_customer():
     data = request.get_json()
@@ -255,6 +289,17 @@ def homePage():
 @manage_books.route('/books',methods=['GET','POST','DELETE','PUT'])
 def manageBooks():
     if request.method == 'GET':
+
+        book_name = request.args.get('book_name')
+
+        if book_name:
+            book = find_book_by_name(book_name)
+            if book:  
+                return jsonify(book) 
+            else:
+                return jsonify({"message": "Book not found"}), 404
+
+        
         filter_type = request.args.get('filter', 'available')
 
         if filter_type == 'available':
@@ -268,7 +313,9 @@ def manageBooks():
         if filter_type == 'all':
             books = display_all_books()
             return jsonify(books)
-    
+        
+        
+        
     if request.method == 'POST':
         data = request.get_json()
         bookName = data.get('name')
@@ -293,6 +340,15 @@ def manageBooks():
 def manageCustomers():
     if request.method == 'GET':
 
+        customer_name = request.args.get('customer_name')
+
+        if customer_name:
+            customer = find_customer_by_name(customer_name)
+            if customer:  
+                return jsonify(customer) 
+            else:
+                return jsonify({"message": "Customer not found"}), 404
+            
         filter_type = request.args.get('filter', 'active')
         
         if filter_type == 'active':
