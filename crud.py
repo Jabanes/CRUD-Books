@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request
 from models import *
 from db import db_session 
 from datetime import datetime
+from sqlalchemy import func
+
 
 home_page = Blueprint('home_page', __name__)
 manage_books = Blueprint('manage_books', __name__)
@@ -16,7 +18,7 @@ def add_new_book(bookName, bookAuthor, yearPublished, bookType):
     db_session.commit()
 
 def find_book_by_name(book_to_find):
-    book = db_session.query(Book).filter_by(name=book_to_find).first()
+    book = db_session.query(Book).filter(func.lower(Book.name) == func.lower(book_to_find)).first()
     
     if book:
         book_data = {
@@ -111,7 +113,7 @@ def add_new_customer(customer_name, customer_city, customer_age):
     db_session.commit()
 
 def find_customer_by_name(customer_to_find):
-    customer = db_session.query(Customer).filter_by(name=customer_to_find).first()
+    customer = db_session.query(Customer).filter(func.lower(Customer.name) == func.lower(customer_to_find)).first()
         
     if customer:
         customer_data = {
