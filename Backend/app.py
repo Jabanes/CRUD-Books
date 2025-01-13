@@ -1,5 +1,8 @@
 from flask import Flask
-from crud import home_page, manage_books, manage_customers, manage_loans
+from home_bp import home_page
+from books_bp import manage_books
+from customers_bp import manage_customers
+from loans_bp import manage_loans
 from db import init_db
 
 
