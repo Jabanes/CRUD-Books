@@ -1,4 +1,5 @@
 from flask import Flask
+from loguru import logger
 from flask_cors import CORS
 from blueprints.home_bp import home_page
 from blueprints.books_bp import manage_books
@@ -9,6 +10,8 @@ from db import init_db
 
 app = Flask(__name__)
 CORS(app)
+
+logger.add("logs/app.log", rotation="1 MB", retention="7 days", level="INFO")
 
 init_db()
 

@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Enum, Boolean, Date
+from sqlalchemy.orm import relationship
 from db import Base
 from enum import Enum as PyEnum
 
@@ -15,6 +16,7 @@ class Book(Base):
     yearPublished = Column(Integer, unique=False)
     type = Column(Enum(BookType), nullable=False)
     available = Column(Boolean, default=True)
+    loans = relationship("Loan", back_populates="book")
 
 def __repr__(self):
     return f'<Book {self.name!r},Author {self.author!r}, ({self.yearPublshed!r}) >'
@@ -26,6 +28,7 @@ class Customer(Base):
     city = Column(String(120), unique=False)
     age = Column(Integer, unique=False)
     active = Column(Boolean, default=True) 
+    loans = relationship("Loan", back_populates="customer")
 
 def __repr__(self):
     return f'<Name {self.name!r},City {self.city!r}, Age {self.age!r} >'
@@ -38,4 +41,6 @@ class Loan(Base):
     loan_date = Column(Date, nullable=False)
     return_date = Column(Date, nullable=False)
     is_returned =  Column(Boolean, default=False)
+    customer = relationship("Customer", back_populates="loans")
+    book = relationship("Book", back_populates="loans")
 
