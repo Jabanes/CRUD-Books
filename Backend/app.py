@@ -1,12 +1,14 @@
 from flask import Flask
-from home_bp import home_page
-from books_bp import manage_books
-from customers_bp import manage_customers
-from loans_bp import manage_loans
+from flask_cors import CORS
+from blueprints.home_bp import home_page
+from blueprints.books_bp import manage_books
+from blueprints.customers_bp import manage_customers
+from blueprints.loans_bp import manage_loans
 from db import init_db
 
 
 app = Flask(__name__)
+CORS(app)
 
 init_db()
 
