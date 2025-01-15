@@ -21,6 +21,10 @@ def manageLoans():
             returned_loans = display_returned_loans()
             return jsonify(returned_loans)
         
+        if  filter_type == 'late':
+            late_loans = display_late_loans()
+            return jsonify(late_loans)
+        
                
 
     if request.method == 'POST':

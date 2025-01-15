@@ -1,7 +1,7 @@
 from flask import request
 from models import *
 from db import db_session 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from sqlalchemy import func
 
 #CRUD BOOKS
@@ -282,5 +282,24 @@ def return_book():
 
 #display all late loans - display all the loans that have surpassed their maximum days to loan 
 def display_late_loans():
-    pass
+    
+    current_date = date.today()
+    late_loans = db_session.query(Loan).filter(Loan.is_returned == False).all()
+
+    late_loans_list = []
+
+    
+    for loan in late_loans:
+        if loan.return_date < current_date:
+            loan_data = {
+                "loan_id": loan.loan_id,
+                "customer_id": loan.customer_id,
+                "book_id": loan.book_id,
+                "loan_date": loan.loan_date,
+                "return_date": loan.return_date,
+                "is_returned": loan.is_returned
+            }
+            late_loans_list.append(loan_data)
+
+    return late_loans_list
 
