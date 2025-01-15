@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Enum, Boolean, Date
+from sqlalchemy import Column, ForeignKey, Integer, String, Enum, Boolean, Date
 from sqlalchemy.orm import relationship
 from db import Base
 from enum import Enum as PyEnum
@@ -36,8 +36,8 @@ def __repr__(self):
 class Loan(Base):
     __tablename__ = 'loans'
     loan_id = Column(Integer, primary_key=True)
-    customer_id = Column(Integer, unique=False)
-    book_id = Column(Integer, unique=False)
+    customer_id = Column(Integer, ForeignKey('customers.id'), unique=False)
+    book_id = Column(Integer, ForeignKey('books.id'), unique=False)
     loan_date = Column(Date, nullable=False)
     return_date = Column(Date, nullable=False)
     is_returned =  Column(Boolean, default=False)

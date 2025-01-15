@@ -14,13 +14,13 @@ init_db()
 
 logger.remove()
 logger.add(sys.stdout, level="DEBUG", format="{time} {level} {message}")
-logger.add("app.log", rotation="1 day", retention="7 days", level="DEBUG", format="{time} {level} {message}")
-
+logger.add("../../../Logs/library.log", rotation="1 day", retention="7 days", level="DEBUG", format="{time} {level} {message}")
 
 @app.before_request
 def log_request_info():
-    if not app.debug:
-        logger.info(f"Request: method={request.method}, path={request.path}, args={request.args}")
+    logger.info(f"Request: method={request.method}, path={request.path}, args={request.args}, from IP={request.remote_addr}")
+
+
 
 app.register_blueprint(home_page)
 app.register_blueprint(manage_books)
