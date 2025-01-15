@@ -1,7 +1,7 @@
 from flask import request
 from models import *
 from db import db_session 
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import func
 
 #CRUD BOOKS
@@ -121,7 +121,6 @@ def find_customer_by_name(customer_to_find):
     
     return {"message": "Customer not found"}
 
-
 def display_all_customers():
     customers = db_session.query(Customer).all()
     customers_list = []
@@ -191,15 +190,23 @@ def delete_customer():
 
 #CRUD LOANS
 #loan a book - dynamic return date based on book type. change availablity to False
-def loan_book(customer_id, book_id, loan_date, return_date):
+def loan_book(customer_id, book_id, loan_date):
     
     loan_date = datetime.strptime(loan_date, '%d-%m-%Y',).date()
-    return_date = datetime.strptime(return_date, '%d-%m-%Y').date()
-
     
     loaned_book = db_session.query(Book).filter_by(id=book_id).first()
 
     if loaned_book:
+
+        if loaned_book.type == BookType.type1:
+            return_date = loan_date + timedelta(days=10)
+        elif loaned_book.type == BookType.type2:
+            return_date = loan_date + timedelta(days=5)
+        elif loaned_book.type == BookType.type3:
+            return_date = loan_date + timedelta(days=2)
+        else:
+            return {"message": "Invalid book type"}
+        
         loaned_book.available = False
 
         new_loan = Loan(customer_id=customer_id, book_id=book_id, loan_date=loan_date, return_date=return_date)

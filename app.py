@@ -10,6 +10,8 @@ from db import init_db
 
 app = Flask(__name__)
 CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://127.0.0.1", "methods": ["POST", "GET", "PUT", "DELETE"], "allow_headers": ["Content-Type"]}})
+
 init_db()
 
 logger.remove()
@@ -19,7 +21,6 @@ logger.add("../../../Logs/library.log", rotation="1 day", retention="7 days", le
 @app.before_request
 def log_request_info():
     logger.info(f"Request: method={request.method}, path={request.path}, args={request.args}, from IP={request.remote_addr}")
-
 
 
 app.register_blueprint(home_page)

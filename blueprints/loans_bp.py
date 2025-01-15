@@ -29,10 +29,9 @@ def manageLoans():
         customer_id = data.get('customer_id')
         book_id = data.get('book_id')
         loan_date = data.get('loan_date')
-        return_date = data.get('return_date')
-
-        print(f'loaned: {customer_id, book_id, loan_date, return_date}')
-        loan_book(customer_id, book_id, loan_date, return_date)
+        
+        print(f'loaned: {customer_id, book_id, loan_date}')
+        loan_book(customer_id, book_id, loan_date)
 
         return jsonify({"message": "New loan was added"}), 201
 
