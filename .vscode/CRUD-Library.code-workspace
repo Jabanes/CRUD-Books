@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../Logs"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "CRUD-Library"
+	}
+}
