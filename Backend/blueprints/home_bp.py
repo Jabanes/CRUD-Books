@@ -4,7 +4,7 @@ from crud import *
 
 home_page = Blueprint('home_page', __name__)
 
-@home_page.route('/')
+@home_page.route('/home')
 def homePage():
-    logger.info(f"Home page accessed from IP: {request.remote_addr}")
-    return send_from_directory('../Frontend', "index.html")
+    logger.info(f"home page accessed from IP: {request.remote_addr}")
+    return send_from_directory('../Frontend', "home.html")

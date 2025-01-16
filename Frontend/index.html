@@ -3,63 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Library Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+    <script src="static/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./static/script.js"></script>
-    <link rel="stylesheet" href="./static/style.css">
-
+    
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <h1>Library</h1>
-        </div>
-        <nav>
-            <ul>
-                <li class="dropdown">
-                    <a href="javascript:void(0)">Manage Books</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Add Book</a></li>
-                        <li><a href="#">Edit Book</a></li>
-                        <li><a href="#">Delete Book</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="javascript:void(0)">Manage Customers</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Add Customer</a></li>
-                        <li><a href="#">Edit Customer</a></li>
-                        <li><a href="#">Delete Customer</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="javascript:void(0)">Manage Loans</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Loan Book</a></li>
-                        <li><a href="#">Return Book</a></li>
-                        <li><a href="#">Loan History</a></li>
-                    </ul>
-                </li>
-            </ul>
+    <div class="container-fluid">
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <a class="navbar-brand" href="#">Library Management</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <button class="btn btn-dark" type="button" id="sidebarToggle" onclick="toggleSidebar()">
+                <span class="navbar-toggler-icon"></span> Toggle Sidebar
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <button type="button" class="btn btn-primary" onclick="changeContent('home-content')">Home</button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Menu</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
-    </header>
 
-    <main>
-        <div class="content-frame">
-            <h2>Welcome to the Library</h2>
-            <p>This is a place where you can find and borrow a wide range of books. Explore our collection today!</p>
+        <div class="row">
+            <!-- Left Side Menu -->
+            <div id="sideMenu" class="side-menu p-3">
+                <ul class="nav flex-column">
+                    <!-- Manage Books -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="collapse" data-target="#manageBooks">
+                            Manage Books
+                        </a>
+                        <div id="manageBooks" class="collapse">
+                            <ul class="nav flex-column pl-3">
+                                <li class="nav-item"><a class="nav-link" href="#">Add Book</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Edit Book</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Delete Book</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- Manage Customers -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="collapse" data-target="#manageCustomers">
+                            Manage Customers
+                        </a>
+                        <div id="manageCustomers" class="collapse">
+                            <ul class="nav flex-column pl-3">
+                                <li class="nav-item"><a class="nav-link" href="#">Add Customer</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Edit Customer</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Delete Customer</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- Manage Loans -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="collapse" data-target="#manageLoans">
+                            Manage Loans
+                        </a>
+                        <div id="manageLoans" class="collapse">
+                            <ul class="nav flex-column pl-3">
+                                <li class="nav-item"><a class="nav-link" href="#">Issue Loan</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Return Loan</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">View Loans</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="frame mt-4" id="dynamicFrame">
+                <h4>Welcome! Select an option above to change the content.</h4>
+            </div>
+
+    
+
+            <div class="footer">
+                <p>&copy; 2025 Your Library Management | All Rights Reserved</p>
+            </div>
+
         </div>
-    </main>
+    </div>
 
-    <footer>
-        <p>&copy; 2025 Library. All rights reserved.</p>
-    </footer>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+
 </body>
-
-<script>
-
-
-
-
-</script>
 </html>

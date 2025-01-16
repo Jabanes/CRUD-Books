@@ -2,9 +2,10 @@ import sys
 from flask import Flask, request
 from loguru import logger
 from flask_cors import CORS
-from blueprints.home_bp import home_page
+from blueprints.index_bp import index_page
 from blueprints.books_bp import manage_books
 from blueprints.customers_bp import manage_customers
+from blueprints.home_bp import home_page
 from blueprints.loans_bp import manage_loans
 from db import init_db
 
@@ -23,6 +24,7 @@ def log_request_info():
     logger.info(f"Request: method={request.method}, path={request.path}, args={request.args}, from IP={request.remote_addr}")
 
 
+app.register_blueprint(index_page)
 app.register_blueprint(home_page)
 app.register_blueprint(manage_books)
 app.register_blueprint(manage_customers)
