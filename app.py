@@ -8,7 +8,7 @@ from blueprints.customers_bp import manage_customers
 from blueprints.loans_bp import manage_loans
 from db import init_db
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../Frontend/static')
 CORS(app)
 CORS(app, resources={r"/*": {"origins": "http://127.0.0.1", "methods": ["POST", "GET", "PUT", "DELETE"], "allow_headers": ["Content-Type"]}})
 
