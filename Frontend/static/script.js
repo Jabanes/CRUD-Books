@@ -1,56 +1,44 @@
-// Call the function when the page loads
-window.onload = function() {
-    loadHomeContent();
+window.onload = () => {
+    loadHomeContent(); // Load the home page content by default when the page loads
 };
 
-const SERVER = "http://127.0.0.1:5000"
-axios.get().then(res=> console.log(res.data))
-
-const toggleSidebar =() => {
-    var sideMenu = document.getElementById("sideMenu");
+// Toggle the sidebar visibility
+const toggleSidebar = () => {
+    const sideMenu = document.getElementById("sideMenu");
     sideMenu.classList.toggle("show");
-}
+};
 
+// Function to change the content of the frame based on the content type
 const changeContent = (contentType) => {
     console.log("changeContent function called with:", contentType);  // Debugging line
-    var content = '';
-
+    
     if (contentType === 'home-content') {
-        console.log("Attempting to load home.html");  // Debugging line
-        axios.get('/home')
-            .then(response => {
-                document.getElementById('dynamicFrame').innerHTML = response.data;
-            })
-            .catch(error => {
-                console.error('Error loading home.html:', error);
-            });
-        }
-
-    if (contentType === 'add-book') {
-        console.log("Attempting to load add-book.html");  // Debugging line
-        axios.get('/home')
-            .then(response => {
-                document.getElementById('dynamicFrame').innerHTML = response.data;
-            })
-            .catch(error => {
-                console.error('Error loading add-book.html:', error);
-            });
-
+        console.log("Loading home.html...");
+        loadContentFromFile('static/home.html');  // Change path to static folder
+    } else if (contentType === 'add-book') {
+        console.log("Loading add-book.html...");
+        loadContentFromFile('static/add-book.html');  // Change path to static folder
     } else {
-        // Handle other content types...
-        content = '<h4>This is static content</h4>';
+        // Handle other content types if needed
+        const content = '<h4>This is static content</h4>';
         document.getElementById('dynamicFrame').innerHTML = content;
     }
-}
+};
 
-const loadHomeContent =() => {
-    console.log("Loading home.html content...");
-    axios.get('/home')
-        .then(response => {
-            document.getElementById('dynamicFrame').innerHTML = response.data;
+// Helper function to load HTML content from file and inject it into the frame
+const loadContentFromFile = (filePath) => {
+    fetch(filePath)
+        .then(response => response.text()) // Read the file content as text
+        .then(data => {
+            document.getElementById('dynamicFrame').innerHTML = data;  // Inject the content
         })
         .catch(error => {
-            console.error('Error loading home.html:', error);
+            console.error(`Error loading ${filePath}:`, error);  // Handle errors
         });
-}
+};
 
+// Function to load home content by default
+const loadHomeContent = () => {
+    console.log("Loading home.html content...");
+    loadContentFromFile('static/home.html');  // Change path to static folder
+};

@@ -43,14 +43,31 @@
         padding-top: 20px;
     }
     .frame {
-        border: 2px solid #3498db;
-        border-radius: 8px;
-        padding: 330px;
+        margin-top: 60px; /* Account for the fixed navbar height */
+        margin-left: 250px; /* Ensure space for sidebar */
+        padding: 20px;
         background-color: #ecf0f1;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        position: absolute;
-        margin-left: 350px;
+        border-radius: 8px;
+        position: relative; /* Allow content to position inside */
+        width: calc(100% - 250px); /* Take the remaining space after sidebar */
+        height: calc(100vh - 60px); /* Take remaining height after navbar */
+        overflow: auto; /* Handle overflow if content exceeds frame size */
     }
+    @media (max-width: 768px) {
+        .frame {
+            left: 0;
+            margin-left: 0;
+        }
+    }
+
+    #dynamicFrame {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+    }
+
     h1 {
         font-size: 2.5rem;
         color: #2c3e50;

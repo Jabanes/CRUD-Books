@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, send_from_directory
 from crud import *
 
 manage_books = Blueprint('manage_books', __name__)
@@ -34,6 +34,7 @@ def manageBooks():
         
         
     if request.method == 'POST':
+
         data = request.get_json()
         bookName = data.get('name')
         bookAuthor = data.get('author')
@@ -42,7 +43,7 @@ def manageBooks():
         bookGenre = data.get('genre')
 
         add_new_book(bookName, bookAuthor, yearPublished, bookType, bookGenre)
-
+        
         return jsonify({"message": "New book added"}), 201
     
     if request.method == 'PUT':

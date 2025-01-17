@@ -8,6 +8,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="static/style.css">
     <script src="static/script.js"></script>
+    <script src="static/manage_books.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
 </head>
@@ -46,8 +47,8 @@
                         </a>
                         <div id="manageBooks" class="collapse">
                             <ul class="nav flex-column pl-3">
-                                <li class="nav-item"><a class="nav-link" href="#">Add a Book</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">Display books</a></li>
+                                <li onclick="changeContent('add-book')" class="nav-item"><a class="nav-link" href="#">Add Book</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Edit Book</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#">Delete Book</a></li>
                             </ul>
                         </div>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* Adjustments for the content inside the frame */
+.container {
+    max-width: 100%;
+    padding: 20px;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    height: 350px;
+}
+
+.card {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.card-text {
+    color: #6c757d;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    filter: invert(1);
+}
+
+</style>
+<body>
+    <div class="container my-5">
+        <!-- Carousel Section -->
+        <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://via.placeholder.com/1200x400?text=Book+1" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Book Title 1</h5>
+                        <p>Short description of the book content goes here.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://via.placeholder.com/1200x400?text=Book+2" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Book Title 2</h5>
+                        <p>Short description of the book content goes here.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://via.placeholder.com/1200x400?text=Book+3" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Book Title 3</h5>
+                        <p>Short description of the book content goes here.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    
+        <!-- Featured Books Section -->
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <img src="https://via.placeholder.com/350x200?text=Book+1" class="card-img-top" alt="...">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Book Title 1</h5>
+                        <p class="card-text">A brief description of the book.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <img src="https://via.placeholder.com/350x200?text=Book+2" class="card-img-top" alt="...">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Book Title 2</h5>
+                        <p class="card-text">A brief description of the book.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <img src="https://via.placeholder.com/350x200?text=Book+3" class="card-img-top" alt="...">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Book Title 3</h5>
+                        <p class="card-text">A brief description of the book.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
