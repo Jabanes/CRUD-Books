@@ -14,6 +14,7 @@ class Book(Base):
     name = Column(String(50), unique=False)
     author = Column(String(120), unique=False)
     yearPublished = Column(Integer, unique=False)
+    genre = Column(String(50), unique=False)
     type = Column(Enum(BookType), nullable=False)
     available = Column(Boolean, default=True)
     loans = relationship("Loan", back_populates="book")

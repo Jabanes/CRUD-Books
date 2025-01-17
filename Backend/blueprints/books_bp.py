@@ -39,8 +39,9 @@ def manageBooks():
         bookAuthor = data.get('author')
         yearPublished = data.get('yearPublished')
         bookType = data.get('type')
+        bookGenre = data.get('genre')
 
-        add_new_book(bookName, bookAuthor, yearPublished, bookType)
+        add_new_book(bookName, bookAuthor, yearPublished, bookType, bookGenre)
 
         return jsonify({"message": "New book added"}), 201
     

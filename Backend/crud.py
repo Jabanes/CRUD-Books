@@ -5,8 +5,8 @@ from datetime import date, datetime, timedelta
 from sqlalchemy import func
 
 #CRUD BOOKS
-def add_new_book(bookName, bookAuthor, yearPublished, bookType):
-    new_book = Book(name=bookName, author=bookAuthor, yearPublished=yearPublished, type=BookType(bookType))
+def add_new_book(bookName, bookAuthor, yearPublished, bookType, bookGenre):
+    new_book = Book(name=bookName, author=bookAuthor, yearPublished=yearPublished, type=BookType(bookType), genre=bookGenre)
     db_session.add(new_book)
     db_session.commit()
 
@@ -37,6 +37,7 @@ def display_all_books():
             "name": book.name,
             "author": book.author,
             "yearPublished": book.yearPublished,
+            "genre" : book.genre,
             "type": book.type.value,  
             "available": book.available
         }
@@ -52,6 +53,7 @@ def display_available_books():
             "name": book.name,
             "author": book.author,
             "yearPublished": book.yearPublished,
+            "genre" : book.genre,
             "type": book.type.value,  
             "available": book.available
         }
@@ -79,6 +81,7 @@ def update_book():
     new_bookName = data.get('name')
     new_bookAuthor = data.get('author')
     new_yearPublished = data.get('yearPublished')
+    new_genre = data.get('genre')
     new_bookType = data.get('type')
 
     book = db_session.query(Book).get(id_to_update)
@@ -86,6 +89,7 @@ def update_book():
     book.name = new_bookName if new_bookName else book.name
     book.author = new_bookAuthor if new_bookAuthor else book.author
     book.new_yearPublished = new_yearPublished if new_yearPublished else book.yearPublished
+    book.genre = new_genre if new_genre else book.genre
     book.type = BookType(new_bookType) if new_bookType else book.type
 
     db_session.commit()
