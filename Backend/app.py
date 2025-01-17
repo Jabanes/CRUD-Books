@@ -12,7 +12,7 @@ from db import init_db
 app = Flask(__name__, static_folder='../Frontend/static')
 CORS(app)
 CORS(app, resources={r"/*": {
-    "origins": "http://127.0.0.1:5500",  # Use the exact origin where you're running your frontend
+    "origins": "*",  # Use the exact origin where you're running your frontend
     "methods": ["POST", "GET", "PUT", "DELETE"],
     "allow_headers": ["Content-Type"]
 }})

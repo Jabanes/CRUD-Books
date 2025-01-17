@@ -8,7 +8,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="static/style.css">
     <script src="static/script.js"></script>
-    <script src="static/manage_books.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
 </head>
@@ -48,7 +47,7 @@
                         <div id="manageBooks" class="collapse">
                             <ul class="nav flex-column pl-3">
                                 <li onclick="changeContent('add-book')" class="nav-item"><a class="nav-link" href="#">Add Book</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">Edit Book</a></li>
+                                <li onclick="changeContent('display-books')" class="nav-item"><a class="nav-link" href="#">All Books</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#">Delete Book</a></li>
                             </ul>
                         </div>
@@ -101,6 +100,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="static/manage_books.js"></script>
     
 
 </body>

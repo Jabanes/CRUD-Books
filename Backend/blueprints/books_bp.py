@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, send_from_directory
+from flask import Blueprint, jsonify, request
 from crud import *
 
 manage_books = Blueprint('manage_books', __name__)

@@ -11,13 +11,16 @@ const toggleSidebar = () => {
 // Function to change the content of the frame based on the content type
 const changeContent = (contentType) => {
     console.log("changeContent function called with:", contentType);  // Debugging line
-    
+
     if (contentType === 'home-content') {
         console.log("Loading home.html...");
         loadContentFromFile('static/home.html');  // Change path to static folder
     } else if (contentType === 'add-book') {
         console.log("Loading add-book.html...");
         loadContentFromFile('static/add-book.html');  // Change path to static folder
+    } else if (contentType === 'display-books') {
+        console.log("Loading display-books.html...");
+        loadContentFromFile('static/display-books.html');
     } else {
         // Handle other content types if needed
         const content = '<h4>This is static content</h4>';
@@ -42,3 +45,4 @@ const loadHomeContent = () => {
     console.log("Loading home.html content...");
     loadContentFromFile('static/home.html');  // Change path to static folder
 };
+  
