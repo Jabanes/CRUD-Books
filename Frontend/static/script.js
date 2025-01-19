@@ -22,10 +22,15 @@ const changeContent = (contentType) => {
         console.log("Loading display-books.html...");
         loadContentFromFile('static/display-books.html');
         window.load_books()
-    } else {
+    } else if (contentType === 'view_book-content') {
+        console.log("Loading view_book.html...");
+        loadContentFromFile('static/view-book.html');
+    }
+    else {
         // Handle other content types if needed
         const content = '<h4>This is static content</h4>';
         document.getElementById('dynamicFrame').innerHTML = content;
+
     }
 };
 

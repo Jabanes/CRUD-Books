@@ -46,7 +46,6 @@ window.load_books = () => axios.get('http://127.0.0.1:5000/books')
         display_books(books)
     })
     .catch(error => console.error('Error fetching books:', error));
-    
 
 const display_books = (books) =>{
     const tableBody = document.getElementById('books-table-body');
@@ -77,9 +76,44 @@ const display_books = (books) =>{
 }
 // Functions to handle View, Edit, and Delete actions
 function viewBook(bookId) {
-    alert(`View details for book with ID: ${bookId}`);
+    changeContent('view_book-content')
+    axios.get(`/books?book_id=${bookId}`)
+        .then(response => {
+            // Assuming the response contains the book data
+            const book = response.data;
+            if (book.message) {
+                // Handle the case when no book is found (message is returned)
+                alert(book.message);
+            } else {
+                // If the book data is found, dynamically update the book details page
+                updateBookDetails(book);
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching book data:", error);
+        });
 }
 
+function updateBookDetails(book) {
+    const bookTitle = document.getElementById("book-title");
+    const bookAuthor = document.getElementById("book-author");
+    const bookYear = document.getElementById("book-year");
+    const bookType = document.getElementById("book-type");
+    const bookGenre = document.getElementById("book-genre");
+    const bookAvailable = document.getElementById("book-available");
+    const bookImage = document.getElementById("book-image");
+
+    // Set the book details
+    bookTitle.textContent = book.name || "Unknown Title";
+    bookAuthor.textContent = book.author || "Unknown Author";
+    bookYear.textContent = book.yearPublished || "Unknown Year";
+    bookType.textContent = book.type || "Unknown Type";
+    bookGenre.textContent = book.genre || "Unknown Genre";
+    bookAvailable.textContent = book.available ? "Yes" : "No";
+
+    // Set the default image if no image is provided
+    bookImage.src = book.image || "static/book.jpg";  // Use the default image if no im
+}
 function editBook(bookId) {
     alert(`Edit book with ID: ${bookId}`);
 }

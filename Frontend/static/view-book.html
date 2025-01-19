@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .book-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .book-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            object-fit: contain; /* Keeps the image proportionate */
+            margin-right: 20px; /* Space between the image and the details */
+        }
+
+        .book-details {
+            text-align: left;
+        }
+
+        .book-details h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .book-details p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+
+        .book-details button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-container">
+        <div class="row book-container">
+            <!-- Book Image -->
+            <div class="col-md-4">
+                <img id="book-image" src="book.jpg" alt="Book Image" class="img-fluid" />
+            </div>
+            <!-- Book Details -->
+            <div class="col-md-8 book-details">
+                <h2 id="book-title" class="mb-3">Book Title</h2>
+                <p><strong>Author:</strong> <span id="book-author">Author Name</span></p>
+                <p><strong>Year Published:</strong> <span id="book-year">Year</span></p>
+                <p><strong>Type:</strong> <span id="book-type">Type</span></p>
+                <p><strong>Genre:</strong> <span id="book-genre">Genre</span></p>
+                <p><strong>Available:</strong> <span id="book-available">Yes</span></p>
+                <button class="btn btn-primary" onclick="changeContent('display-books')">Back to Book List</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</body>
+</html>

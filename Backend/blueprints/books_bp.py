@@ -7,6 +7,15 @@ manage_books = Blueprint('manage_books', __name__)
 def manageBooks():
     if request.method == 'GET':
 
+        book_id = request.args.get('book_id')
+        
+        if book_id:
+            book = find_book_by_id(book_id)
+            if book:
+                return jsonify(book)  # Return the book details as JSON
+            else:
+                return jsonify({"message": "Book not found"}), 404
+
         book_name = request.args.get('book_name')
 
         if book_name:

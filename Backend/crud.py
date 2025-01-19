@@ -27,6 +27,24 @@ def find_book_by_name(book_to_find):
  
     return {"message": "Book not found"}
 
+def find_book_by_id(id_to_find):
+    book = db_session.query(Book).filter(Book.id == id_to_find).first()  
+
+    if book:
+        book_data = {
+            "id": book.id,
+            "name": book.name,
+            "author": book.author,
+            "yearPublished": book.yearPublished,
+            "type": book.type.value, 
+            "genre": book.genre,
+            "available": book.available
+        }
+        return book_data 
+    
+ 
+    return {"message": "Book not found"}
+
 
 def display_all_books():
     books = db_session.query(Book).all()
@@ -69,6 +87,7 @@ def display_unavailable_books():
             "name": book.name,
             "author": book.author,
             "yearPublished": book.yearPublished,
+            "genre" : book.genre,
             "type": book.type.value,  
             "available": book.available
         }
