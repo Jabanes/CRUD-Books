@@ -1,3 +1,4 @@
+let currentBookId = null;
 
 window.add_book = () => {
     console.log("Attempting to add a book");
@@ -65,7 +66,7 @@ const display_books = (books) =>{
                     <div class="options-menu">
                         <button class="btn btn-light">⋮</button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" onclick="editBook(${book.id})">Edit</a>
+                            <a class="dropdown-item" href="#" onclick="loadBookForEditing(${book.id})">Edit</a>
                             <a class="dropdown-item text-danger" href="#" onclick="deleteBook(${book.id})">Delete</a>
                         </div>
                     </div>
@@ -86,15 +87,14 @@ function viewBook(bookId) {
                 alert(book.message);
             } else {
                 // If the book data is found, dynamically update the book details page
-                updateBookDetails(book);
+                loadBookDetails(book);
             }
         })
         .catch(error => {
             console.error("Error fetching book data:", error);
         });
 }
-
-function updateBookDetails(book) {
+function loadBookDetails(book) {
     const bookTitle = document.getElementById("book-title");
     const bookAuthor = document.getElementById("book-author");
     const bookYear = document.getElementById("book-year");
@@ -102,7 +102,6 @@ function updateBookDetails(book) {
     const bookGenre = document.getElementById("book-genre");
     const bookAvailable = document.getElementById("book-available");
     const bookImage = document.getElementById("book-image");
-
     // Set the book details
     bookTitle.textContent = book.name || "Unknown Title";
     bookAuthor.textContent = book.author || "Unknown Author";
@@ -110,12 +109,96 @@ function updateBookDetails(book) {
     bookType.textContent = book.type || "Unknown Type";
     bookGenre.textContent = book.genre || "Unknown Genre";
     bookAvailable.textContent = book.available ? "Yes" : "No";
-
     // Set the default image if no image is provided
     bookImage.src = book.image || "static/book.jpg";  // Use the default image if no im
 }
+function loadBookForEditing(bookId) {
+    currentBookId = bookId;
+    axios.get(`/books?book_id=${bookId}`)
+        .then(response => {
+            const book = response.data;
+            console.log("editing book:");
+            console.log(book);
+            
+            console.log('Book name:', book.name);
+
+            // Book Title
+            const bookTitleInput = document.getElementById('book-title');
+            if (bookTitleInput) {
+                bookTitleInput.placeholder = book.name || 'Unknown';
+                console.log('bookTitleInput:', bookTitleInput);
+            }
+
+            // Author
+            const bookAuthorInput = document.getElementById('book-author');
+            if (bookAuthorInput) {
+                bookAuthorInput.placeholder = book.author || 'Unknown';
+            }
+
+            // Year Published
+            const bookYearInput = document.getElementById('book-year');
+            if (bookYearInput) {
+                bookYearInput.placeholder = book.yearPublished || 'Unknown';
+            }
+
+            // Genre
+            const bookGenreSelect = document.getElementById('book-genre');
+            if (bookGenreSelect) {
+                bookGenreSelect.value = book.genre || '';
+            }
+
+            // Type
+            const bookTypeSelect = document.getElementById('book-type');
+            if (bookTypeSelect) {
+                bookTypeSelect.value = book.type || '';
+            }
+
+            // Availability
+            const bookAvailableCheckbox = document.getElementById('book-available');
+            if (bookAvailableCheckbox) {
+                bookAvailableCheckbox.checked = book.available || false;
+            }
+        })
+        .then(() => {
+            changeContent("edit_book-content");
+        })
+        .catch(error => {
+            console.error('Error loading book data:', error);
+        });
+
+}
+
 function editBook(bookId) {
-    alert(`Edit book with ID: ${bookId}`);
+    // Collect input values
+    const title = document.getElementById('book-title').value || document.getElementById('book-title').placeholder;
+    const author = document.getElementById('book-author').value || document.getElementById('book-author').placeholder;
+    const yearPublished = document.getElementById('book-year').value || document.getElementById('book-year').placeholder;
+    const genre = document.getElementById('book-genre').value || '';
+    const type = parseInt(document.getElementById('book-type').value) || 1;
+    const available = document.getElementById('book-available').checked;
+
+    // Create the payload
+    const updatedBook = {
+        id: currentBookId,
+        name: title,
+        author: author,
+        yearPublished: yearPublished,
+        genre: genre,
+        type: type,
+        available: available
+    };
+
+    // Send the PUT request
+    axios.put(`/books`, updatedBook)
+        .then(response => {
+            console.log('Book updated successfully:', response.data);
+            alert('Book updated successfully!');
+            // Optionally, redirect to the book list or another page
+        })
+        .catch(error => {
+            console.error('Error updating book:', error);
+            alert('Failed to update book. Please try again.');
+        });
 }
 
 function deleteBook(bookId) {

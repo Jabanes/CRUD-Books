@@ -26,6 +26,10 @@ const changeContent = (contentType) => {
         console.log("Loading view_book.html...");
         loadContentFromFile('static/view-book.html');
     }
+    else if (contentType === 'edit_book-content') {
+        console.log("Loading edit_book.html...");
+        loadContentFromFile('static/edit-book.html');
+    }
     else {
         // Handle other content types if needed
         const content = '<h4>This is static content</h4>';

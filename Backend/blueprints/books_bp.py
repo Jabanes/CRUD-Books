@@ -56,7 +56,6 @@ def manageBooks():
         return jsonify({"message": "New book added"}), 201
     
     if request.method == 'PUT':
-
         update_book()
         return jsonify({"message": "Book updated successfully!"}), 200
     

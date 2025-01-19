@@ -1,4 +1,4 @@
-from flask import request
+from flask import jsonify, request
 from models import *
 from db import db_session 
 from datetime import date, datetime, timedelta
@@ -103,15 +103,30 @@ def update_book():
     new_genre = data.get('genre')
     new_bookType = data.get('type')
 
+    # Fetch the book from the database
     book = db_session.query(Book).get(id_to_update)
+    
+    # Check if the book exists
+    if not book:
+        return jsonify({'error': 'Book not found'}), 404
 
+    # Update fields if new data is provided
     book.name = new_bookName if new_bookName else book.name
     book.author = new_bookAuthor if new_bookAuthor else book.author
-    book.new_yearPublished = new_yearPublished if new_yearPublished else book.yearPublished
+    book.yearPublished = new_yearPublished if new_yearPublished else book.yearPublished
     book.genre = new_genre if new_genre else book.genre
     book.type = BookType(new_bookType) if new_bookType else book.type
+   
+    try:
+        db_session.commit()
+        return jsonify({'success': True, 'message': 'Book updated successfully'}), 200
+    except Exception as e:
+        db_session.rollback()  # Rollback on error
+        print(f"Error committing changes: {e}")
+        jsonify({'error': 'An error occurred while updating the book'}), 500
 
-    db_session.commit()
+    # Return success message
+    return jsonify({'success': True, 'message': 'Book updated successfully'}), 200
     
 def delete_book():
     data = request.get_json()

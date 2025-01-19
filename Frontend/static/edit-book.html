@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .book-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .book-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            object-fit: contain; /* Keeps the image proportionate */
+            margin-right: 20px; /* Space between the image and the details */
+        }
+
+        .book-details {
+            text-align: left;
+        }
+
+        .book-details h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .book-details p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+
+        .book-details input,
+        .book-details select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin: 5px 0 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .book-details button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+        }
+
+        .book-details label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-container">
+        <div class="row">
+            <!-- Book Image -->
+            <div class="col-md-4">
+                <img id="book-image" src="static/book.jpg" alt="Book Image" class="img-fluid book-image" />
+            </div>
+            <!-- Book Details -->
+            <div class="col-md-8 book-details">
+                <!-- Editable Book Title -->
+                <label for="book-title">New Title:</label>
+                <input type="text" id="book-title" class="form-control mb-3" placeholder="" />
+
+                <!-- Author -->
+                <label for="book-author">New Author:</label>
+                <input type="text" id="book-author" class="form-control" />
+
+                <!-- Year Published -->
+                <label for="book-year">New Year Publish:</label>
+                <input type="number" id="book-year" class="form-control" />
+
+                <label for="book-genre">New Genre:</label>
+                <select id="book-genre" class="form-control">
+                    <option value="" disabled selected>Select a genre</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Non-Fiction">Non-Fiction</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Science Fiction">Science Fiction</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Biography">Biography</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <!-- Type (Dropdown) -->
+                <label for="book-type">New Type:</label>
+                <select id="book-type" class="form-control">
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+
+                
+                
+                <!-- Availability (Checkbox) -->
+                <label for="book-available">Available:</label>
+                <input type="checkbox" id="book-available" class="form-control" />
+
+                <!-- Save and Back Buttons -->
+                <button class="btn btn-success mt-3" onclick="editBook()">Save Changes</button>
+                <button class="btn btn-secondary mt-3" onclick="changeContent('display-books')">Back to List</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

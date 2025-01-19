@@ -1,5 +1,5 @@
 "# CRUD-Books" 
 
-implement relationships in the models
-implement CORS authotications
-implement Logger (loguru)
+front:
+need to fix refreshing page muiltiple times (get requests in "all books")
+need to fix placeholder for editing a book - display old books details before editing...
