@@ -1,3 +1,4 @@
+
 window.add_book = () => {
     console.log("Attempting to add a book");
 
@@ -38,11 +39,17 @@ window.add_book = () => {
         });
 };
 
-axios.get('http://127.0.0.1:5000/books')
+window.load_books = () => axios.get('http://127.0.0.1:5000/books')
     .then(response => {
         console.log(response.data);
         const books = response.data;
-        const tableBody = document.getElementById('books-table-body');
+        display_books(books)
+    })
+    .catch(error => console.error('Error fetching books:', error));
+    
+
+const display_books = (books) =>{
+    const tableBody = document.getElementById('books-table-body');
         books.forEach((book, index) => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -67,9 +74,7 @@ axios.get('http://127.0.0.1:5000/books')
             `;
             tableBody.appendChild(row);
         });
-    })
-    .catch(error => console.error('Error fetching books:', error));
-
+}
 // Functions to handle View, Edit, and Delete actions
 function viewBook(bookId) {
     alert(`View details for book with ID: ${bookId}`);

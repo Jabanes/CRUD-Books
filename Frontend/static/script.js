@@ -21,6 +21,7 @@ const changeContent = (contentType) => {
     } else if (contentType === 'display-books') {
         console.log("Loading display-books.html...");
         loadContentFromFile('static/display-books.html');
+        window.load_books()
     } else {
         // Handle other content types if needed
         const content = '<h4>This is static content</h4>';
