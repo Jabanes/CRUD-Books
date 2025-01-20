@@ -82,16 +82,16 @@ const display_books = (books) =>{
 }
 
 
-const fetchBooks = () => {
-    axios.get('/books')
-        .then(response => {
-            const books = response.data;
-            display_books(books);
-        })
-        .catch(error => {
-            console.error('Error fetching books:', error);
-        });
-};
+// const fetchBooks = () => {
+//     axios.get('/books')
+//         .then(response => {
+//             const books = response.data;
+//             display_books(books);
+//         })
+//         .catch(error => {
+//             console.error('Error fetching books:', error);
+//         });
+// };
 
 // Functions to handle View, Edit, and Delete actions
 function viewBook(bookId) {
@@ -186,14 +186,14 @@ function loadBookForEditing(bookId) {
 
 }
 
-function editBook(bookId) {
+function editBook() {
+
     // Collect input values
-    const title = document.getElementById('book-title').value || document.getElementById('book-title').placeholder;
-    const author = document.getElementById('book-author').value || document.getElementById('book-author').placeholder;
-    const yearPublished = document.getElementById('book-year').value || document.getElementById('book-year').placeholder;
-    const genre = document.getElementById('book-genre').value || '';
-    const type = parseInt(document.getElementById('book-type').value) || 1;
-    const available = document.getElementById('book-available').checked;
+    const title = document.getElementById('book-title').value || null;
+    const author = document.getElementById('book-author').value || null;
+    const yearPublished = document.getElementById('book-year').value || null;
+    const genre = document.getElementById('book-genre').value || null;;
+    const type = parseInt(document.getElementById('book-type').value) || null;;
 
     // Create the payload
     const updatedBook = {
@@ -203,7 +203,6 @@ function editBook(bookId) {
         yearPublished: yearPublished,
         genre: genre,
         type: type,
-        available: available
     };
 
     // Send the PUT request
