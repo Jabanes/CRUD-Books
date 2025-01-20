@@ -8,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     
     <style>
+        
         .options-menu {
             position: relative;
             display: inline-block;
@@ -70,20 +71,46 @@
         .unavailable {
         opacity: 0.5;
         }
+        /* Style for both buttons */
+        #deleted-books-btn, #available-books-btn {
+            padding: 8px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin-right: 10px;
+        }
+
+        /* Specific styles for "Deleted Books" button */
+        #deleted-books-btn {
+            background-color: #e74c3c; /* Red */
+            color: white;
+        }
+
+        #deleted-books-btn:hover {
+            background-color: #c0392b; /* Darker Red */
+        }
+
+        /* Specific styles for "Available Books" button */
+        #available-books-btn {
+            background-color: #3498db; /* Blue */
+            color: white;
+        }
+
+        #available-books-btn:hover {
+            background-color: #2980b9; /* Darker Blue */
+        }
+
+        
+            
     </style>
 </head>
 <body>
-    <!-- <div class="form-check mb-3">
-        <input class="form-check-input" type="checkbox" id="show-unavailable-checkbox">
-        <label class="form-check-label" for="show-unavailable-checkbox">
-            Show Unavailable Books
-        </label>
-        <button onclick="refreshContent()" id="refresh-button" class="btn btn-primary">
-            <i class="fas fa-sync-alt"></i> Refresh
-        </button>
-    </div> -->
-    <button onclick="showUnavailableBooks()">Show unavailble books</button>
-    <button onclick="refreshContent()">Hide</button>
+  
+    <button onclick="showUnavailableBooks()" id="deleted-books-btn">Deleted Books</button>
+    <button onclick="refreshContent()" id="available-books-btn">Available Books</button>
+    
     <div class="container table-container">
         <h1 class="text-center my-4">Books List</h1>
         <table class="table table-striped">

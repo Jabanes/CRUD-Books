@@ -246,6 +246,7 @@ showUnavailableBooks  = () =>{
 
 const display_unavailable_books = (unavailable_books) =>{
     const tableBody = document.getElementById('books-table-body');
+    tableBody.innerHTML = '';
     unavailable_books.forEach((book, index) => {
             const row = document.createElement('tr');
 
