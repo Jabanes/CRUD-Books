@@ -52,6 +52,11 @@ const display_books = (books) =>{
     const tableBody = document.getElementById('books-table-body');
         books.forEach((book, index) => {
             const row = document.createElement('tr');
+
+            if (!book.available) {
+                row.style.opacity = '0.5';
+            }
+
             row.innerHTML = `
                 <td>${index + 1}</td>
                 <td>${book.name}</td>
@@ -75,6 +80,19 @@ const display_books = (books) =>{
             tableBody.appendChild(row);
         });
 }
+
+
+const fetchBooks = () => {
+    axios.get('/books')
+        .then(response => {
+            const books = response.data;
+            display_books(books);
+        })
+        .catch(error => {
+            console.error('Error fetching books:', error);
+        });
+};
+
 // Functions to handle View, Edit, and Delete actions
 function viewBook(bookId) {
     changeContent('view_book-content')
@@ -202,8 +220,70 @@ function editBook(bookId) {
 }
 
 function deleteBook(bookId) {
-    const confirmed = confirm(`Are you sure you want to delete the book with ID: ${bookId}?`);
+    const confirmed = confirm(`Are you sure you want to delete this book?`);
     if (confirmed) {
-        alert(`Book with ID: ${bookId} deleted.`);
+        console.log(bookId);
+        axios.delete(`/books`, {
+            data: {id : bookId}
+        })
+        .then(response => {
+            alert(`Book has been deleted successfully!`, response.data);
+        })
+        }
     }
+
+showUnavailableBooks  = () =>{
+    axios.get('/books?filter=unavailable')
+    .then(response => {
+        unavailable_books = response.data
+        console.log('Unavailable books:', unavailable_books);
+        display_unavailable_books(unavailable_books) 
+      })
+      .catch(error => {
+        console.error('Error fetching unavailable books:', error);
+      });
 }
+
+const display_unavailable_books = (unavailable_books) =>{
+    const tableBody = document.getElementById('books-table-body');
+    unavailable_books.forEach((book, index) => {
+            const row = document.createElement('tr');
+
+            if (!book.available) {
+                row.style.opacity = '0.5';
+            }
+
+            row.innerHTML = `
+                <td>o</td>
+                <td>${book.name}</td>
+                <td>${book.author}</td>
+                <td>
+                    <div class="tooltip-container">
+                        <a href="#" class="view-icon" onclick="viewBook(${book.id})">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <span class="tooltip-text">View Book</span>
+                    </div>
+                    <div class="options-menu">
+                        <button class="btn btn-light">+</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item text-success" href="#" onclick="restoreBook(${book.id})">Restore</a>
+                        </div>
+                    </div>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+}
+
+const restoreBook= (bookId) =>{
+    const confirmed = confirm(`Restore Book?`);
+    if (confirmed) {
+        axios.delete(`/books?action=restore`, {
+            data: {id : bookId}
+        })
+        .then(response => {
+            alert(`Book has been Restored successfully!`, response.data);
+        })
+        }
+}   

@@ -60,6 +60,12 @@ def manageBooks():
         return jsonify({"message": "Book updated successfully!"}), 200
     
     if request.method== 'DELETE':
+        filter_type = request.args.get('action')
+
+        if filter_type == 'restore':
+            restore_book()
+            return jsonify({"message": "Book was restored succussfully!"}), 200
+
         delete_book()
         return jsonify({"message": "Book Changed to unavailable (deleted)"}), 200
 

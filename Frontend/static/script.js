@@ -11,6 +11,7 @@ const toggleSidebar = () => {
 // Function to change the content of the frame based on the content type
 const changeContent = (contentType) => {
     console.log("changeContent function called with:", contentType);  // Debugging line
+    currentContent = contentType;
 
     if (contentType === 'home-content') {
         console.log("Loading home.html...");
@@ -36,6 +37,11 @@ const changeContent = (contentType) => {
         document.getElementById('dynamicFrame').innerHTML = content;
 
     }
+};
+
+const refreshContent = () => {
+    console.log("Refreshing content:", currentContent);
+    changeContent(currentContent); // Reload the current content
 };
 
 // Helper function to load HTML content from file and inject it into the frame

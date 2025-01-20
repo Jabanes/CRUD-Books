@@ -136,7 +136,13 @@ def delete_book():
     book.available = False
     db_session.commit()
 #-------------------------------------
-
+def restore_book():
+    data = request.get_json()
+    id_to_delete = data.get('id')
+    book = db_session.query(Book).get(id_to_delete)
+    
+    book.available = True
+    db_session.commit()
 #CRUD CUSTOMERS
 def add_new_customer(customer_name, customer_city, customer_age):
     new_customer = Customer(name=customer_name, city=customer_city, age=customer_age)
