@@ -31,6 +31,23 @@ const changeContent = (contentType) => {
         console.log("Loading edit_book.html...");
         loadContentFromFile('static/edit-book.html');
     }
+    else if (contentType === 'add-customer') {
+        console.log("Loading add-customer.html...");
+        loadContentFromFile('static/add-customer.html');
+    }
+    else if (contentType === 'display-customers') {
+        console.log("Loading display-books.html...");
+        loadContentFromFile('static/display-customers.html');
+        window.load_customers()
+    }
+    else if (contentType === 'view_customer-content') {
+        console.log("Loading view_customer.html...");
+        loadContentFromFile('static/view-customer.html');
+    }
+    else if (contentType === 'edit_customer-content') {
+        console.log("Loading edit_customer.html...");
+        loadContentFromFile('static/edit-customer.html');
+    }
     else {
         // Handle other content types if needed
         const content = '<h4>This is static content</h4>';

@@ -135,7 +135,7 @@ def delete_book():
     
     book.available = False
     db_session.commit()
-#-------------------------------------
+
 def restore_book():
     data = request.get_json()
     id_to_delete = data.get('id')
@@ -143,6 +143,8 @@ def restore_book():
     
     book.available = True
     db_session.commit()
+
+#-------------------------------------
 #CRUD CUSTOMERS
 def add_new_customer(customer_name, customer_city, customer_age):
     new_customer = Customer(name=customer_name, city=customer_city, age=customer_age)
@@ -164,6 +166,23 @@ def find_customer_by_name(customer_to_find):
         
     
     return {"message": "Customer not found"}
+
+def find_customer_by_id(id_to_find):
+    customer = db_session.query(Customer).filter(Customer.id == id_to_find).first()  
+
+    if customer:
+        customer_data = {
+            "id": customer.id,
+            "name": customer.name,
+            "city": customer.city,
+            "age": customer.age,
+            "active": customer.active
+        }
+        return customer_data 
+    
+ 
+    return {"message": "Customer not found"}
+
 
 def display_all_customers():
     customers = db_session.query(Customer).all()
@@ -217,11 +236,23 @@ def update_customer():
 
     customer = db_session.query(Customer).get(id_to_update)
 
-    customer.name = new_customer_name if new_customer_name else customer.name
-    customer.city = new_customer_city if new_customer_city else customer.author
-    customer.age = new_customer_age if new_customer_age else customer.yearPublished
+    if not customer:
+        return jsonify({'error': 'Customer not found'}), 404
 
-    db_session.commit()
+    customer.name = new_customer_name if new_customer_name else customer.name
+    customer.city = new_customer_city if new_customer_city else customer.city
+    customer.age = new_customer_age if new_customer_age else customer.age
+
+    try:
+        db_session.commit()
+        return jsonify({'success': True, 'message': 'Customer updated successfully'}), 200
+    except Exception as e:
+        db_session.rollback()  # Rollback on error
+        print(f"Error committing changes: {e}")
+        jsonify({'error': 'An error occurred while updating the Customer'}), 500
+
+    # Return success message
+    return jsonify({'success': True, 'message': 'Customer updated successfully'}), 200
 
 def delete_customer():
     data = request.get_json()
@@ -229,6 +260,14 @@ def delete_customer():
     customer = db_session.query(Customer).get(id_to_delete)
     
     customer.active = False
+    db_session.commit()
+
+def restore_customer():
+    data = request.get_json()
+    id_to_delete = data.get('id')
+    customer = db_session.query(Customer).get(id_to_delete)
+    
+    customer.active = True
     db_session.commit()
 #---------------------------------------
 

@@ -59,8 +59,8 @@
                         </a>
                         <div id="manageCustomers" class="collapse">
                             <ul class="nav flex-column pl-3">
-                                <li class="nav-item"><a class="nav-link" href="#">Add Customer</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">Edit Customer</a></li>
+                                <li onclick="changeContent('add-customer')" class="nav-item"><a class="nav-link" href="#">Add Customer</a></li>
+                                <li onclick="changeContent('display-customers')" class="nav-item"><a class="nav-link" href="#">All Customers</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#">Delete Customer</a></li>
                             </ul>
                         </div>
@@ -100,6 +100,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="static/manage_books.js"></script>
+    <script src="static/manage_customers.js"></script>
     
 
 </body>

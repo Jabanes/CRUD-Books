@@ -28,7 +28,7 @@ window.add_book = () => {
     console.log(`the year the book was published is: ${bookYearPublished}`)
 
     axios.post('http://127.0.0.1:5000/books', bookData)
-        
+
 
         .then(response => {
             console.log('Book added successfully:', response.data);
@@ -48,16 +48,16 @@ window.load_books = () => axios.get('http://127.0.0.1:5000/books')
     })
     .catch(error => console.error('Error fetching books:', error));
 
-const display_books = (books) =>{
+const display_books = (books) => {
     const tableBody = document.getElementById('books-table-body');
-        books.forEach((book, index) => {
-            const row = document.createElement('tr');
+    books.forEach((book, index) => {
+        const row = document.createElement('tr');
 
-            if (!book.available) {
-                row.style.opacity = '0.5';
-            }
+        if (!book.available) {
+            row.style.opacity = '0.5';
+        }
 
-            row.innerHTML = `
+        row.innerHTML = `
                 <td>${index + 1}</td>
                 <td>${book.name}</td>
                 <td>${book.author}</td>
@@ -77,23 +77,10 @@ const display_books = (books) =>{
                     </div>
                 </td>
             `;
-            tableBody.appendChild(row);
-        });
+        tableBody.appendChild(row);
+    });
 }
 
-
-// const fetchBooks = () => {
-//     axios.get('/books')
-//         .then(response => {
-//             const books = response.data;
-//             display_books(books);
-//         })
-//         .catch(error => {
-//             console.error('Error fetching books:', error);
-//         });
-// };
-
-// Functions to handle View, Edit, and Delete actions
 function viewBook(bookId) {
     changeContent('view_book-content')
     axios.get(`/books?book_id=${bookId}`)
@@ -130,52 +117,13 @@ function loadBookDetails(book) {
     // Set the default image if no image is provided
     bookImage.src = book.image || "static/book.jpg";  // Use the default image if no im
 }
+
 function loadBookForEditing(bookId) {
     currentBookId = bookId;
     axios.get(`/books?book_id=${bookId}`)
         .then(response => {
             const book = response.data;
             console.log("editing book:");
-            console.log(book);
-            
-            console.log('Book name:', book.name);
-
-            // Book Title
-            const bookTitleInput = document.getElementById('book-title');
-            if (bookTitleInput) {
-                bookTitleInput.placeholder = book.name || 'Unknown';
-                console.log('bookTitleInput:', bookTitleInput);
-            }
-
-            // Author
-            const bookAuthorInput = document.getElementById('book-author');
-            if (bookAuthorInput) {
-                bookAuthorInput.placeholder = book.author || 'Unknown';
-            }
-
-            // Year Published
-            const bookYearInput = document.getElementById('book-year');
-            if (bookYearInput) {
-                bookYearInput.placeholder = book.yearPublished || 'Unknown';
-            }
-
-            // Genre
-            const bookGenreSelect = document.getElementById('book-genre');
-            if (bookGenreSelect) {
-                bookGenreSelect.value = book.genre || '';
-            }
-
-            // Type
-            const bookTypeSelect = document.getElementById('book-type');
-            if (bookTypeSelect) {
-                bookTypeSelect.value = book.type || '';
-            }
-
-            // Availability
-            const bookAvailableCheckbox = document.getElementById('book-available');
-            if (bookAvailableCheckbox) {
-                bookAvailableCheckbox.checked = book.available || false;
-            }
         })
         .then(() => {
             changeContent("edit_book-content");
@@ -223,37 +171,37 @@ function deleteBook(bookId) {
     if (confirmed) {
         console.log(bookId);
         axios.delete(`/books`, {
-            data: {id : bookId}
+            data: { id: bookId }
         })
-        .then(response => {
-            alert(`Book has been deleted successfully!`, response.data);
-        })
-        }
+            .then(response => {
+                alert(`Book has been deleted successfully!`, response.data);
+            })
     }
-
-showUnavailableBooks  = () =>{
-    axios.get('/books?filter=unavailable')
-    .then(response => {
-        unavailable_books = response.data
-        console.log('Unavailable books:', unavailable_books);
-        display_unavailable_books(unavailable_books) 
-      })
-      .catch(error => {
-        console.error('Error fetching unavailable books:', error);
-      });
 }
 
-const display_unavailable_books = (unavailable_books) =>{
+getUnavailableBooks = () => {
+    axios.get('/books?filter=unavailable')
+        .then(response => {
+            unavailable_books = response.data
+            console.log('Unavailable books:', unavailable_books);
+            display_unavailable_books(unavailable_books)
+        })
+        .catch(error => {
+            console.error('Error fetching unavailable books:', error);
+        });
+}
+
+const display_unavailable_books = (unavailable_books) => {
     const tableBody = document.getElementById('books-table-body');
     tableBody.innerHTML = '';
-    unavailable_books.forEach((book, index) => {
-            const row = document.createElement('tr');
+    unavailable_books.forEach((book) => {
+        const row = document.createElement('tr');
 
-            if (!book.available) {
-                row.style.opacity = '0.5';
-            }
+        if (!book.available) {
+            row.style.opacity = '0.5';
+        }
 
-            row.innerHTML = `
+        row.innerHTML = `
                 <td>o</td>
                 <td>${book.name}</td>
                 <td>${book.author}</td>
@@ -272,18 +220,18 @@ const display_unavailable_books = (unavailable_books) =>{
                     </div>
                 </td>
             `;
-            tableBody.appendChild(row);
-        });
+        tableBody.appendChild(row);
+    });
 }
 
-const restoreBook= (bookId) =>{
+const restoreBook = (bookId) => {
     const confirmed = confirm(`Restore Book?`);
     if (confirmed) {
         axios.delete(`/books?action=restore`, {
-            data: {id : bookId}
+            data: { id: bookId }
         })
-        .then(response => {
-            alert(`Book has been Restored successfully!`, response.data);
-        })
-        }
+            .then(response => {
+                alert(`Book has been Restored successfully!`, response.data);
+            })
+    }
 }   

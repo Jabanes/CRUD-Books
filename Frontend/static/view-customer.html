@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>customer Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .customer-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .customer-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            object-fit: contain; /* Keeps the image proportionate */
+            margin-right: 20px; /* Space between the image and the details */
+        }
+
+        .customer-details {
+            text-align: left;
+        }
+
+        .customer-details h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .customer-details p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+
+        .customer-details button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="customer-container">
+        <div class="row customer-container">
+            <!-- customer Image -->
+            <div class="col-md-4">
+                <img id="customer-image" src="customer.jpg" alt="Customer Image" class="img-fluid" />
+            </div>
+            <!-- customer Details -->
+            <div class="col-md-8 customer-details">
+                <h2 id="customer-name" class="mb-3">customer Name</h2>
+                <p><strong>City:</strong> <span id="customer-city">City</span></p>
+                <p><strong>Age:</strong> <span id="customer-age">Age</span></p>
+                <p><strong>Active:</strong> <span id="customer-active">Yes</span></p>
+                <button class="btn btn-primary" onclick="changeContent('display-customers')">Back to customers List</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</body>
+</html>

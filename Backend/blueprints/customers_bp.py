@@ -7,6 +7,15 @@ manage_customers = Blueprint('manage_customers', __name__)
 def manageCustomers():
     if request.method == 'GET':
 
+        customer_id = request.args.get('customer_id')
+        
+        if customer_id:
+            customer = find_customer_by_id(customer_id)
+            if customer:
+                return jsonify(customer)  # Return the book details as JSON
+            else:
+                return jsonify({"message": "Customer not found"}), 404
+            
         customer_name = request.args.get('customer_name')
 
         if customer_name:
@@ -44,5 +53,12 @@ def manageCustomers():
         return jsonify({"message": "Customer was updated successfully!"}), 200
     
     if request.method== 'DELETE':
+
+        filter_type = request.args.get('action')
+
+        if filter_type == 'restore':
+            restore_customer()
+            return jsonify({"message": "Customer was restored succussfully!"}), 200
+        
         delete_customer()
         return jsonify({"message": "Customer's Status changed to innactive"}), 200

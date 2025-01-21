@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit customer</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .customer-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .customer-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            object-fit: contain; /* Keeps the image proportionate */
+            margin-right: 20px; /* Space between the image and the details */
+        }
+
+        .customer-details {
+            text-align: left;
+        }
+
+        .customer-details h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .customer-details p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+
+        .customer-details input,
+        .customer-details select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin: 5px 0 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .customer-details button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+        }
+
+        .customer-details label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="customer-container">
+        <div class="row">
+            <!-- customer Image -->
+            <div class="col-md-4">
+                <img id="customer-image" src="static/customer.jpg" alt="customer Image" class="img-fluid customer-image" />
+            </div>
+            <!-- customer Details -->
+            <div class="col-md-8 customer-details">
+                <label for="customer-name">New Name:</label>
+                <input type="text" id="customer-name" class="form-control mb-3" placeholder="" />
+
+                <label for="customer-author">New City:</label>
+                <input type="text" id="customer-city" class="form-control" />
+
+                <label for="customer-age">New Date of birth:</label>
+                <input type="number" id="customer-age" class="form-control" />
+               
+                <button class="btn btn-success mt-3" onclick="editcustomer()">Save Changes</button>
+                <button class="btn btn-secondary mt-3" onclick="changeContent('display-customers')">Back to List</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

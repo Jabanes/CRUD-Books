@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books Management</title>
+    <title>Customers Management</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     
@@ -73,7 +73,7 @@
         opacity: 0.5;
         }
         /* Style for both buttons */
-        #deleted-books-btn, #available-books-btn {
+        #inactive-customers, #active-customers {
             padding: 8px 15px;
             font-size: 14px;
             border: none;
@@ -84,22 +84,22 @@
         }
 
         /* Specific styles for "Deleted Books" button */
-        #deleted-books-btn {
+        #inactive-customers {
             background-color: #e74c3c; /* Red */
             color: white;
         }
 
-        #deleted-books-btn:hover {
+        #inactive-customers:hover {
             background-color: #c0392b; /* Darker Red */
         }
 
         /* Specific styles for "Available Books" button */
-        #available-books-btn {
+        #active-customers {
             background-color: #3498db; /* Blue */
             color: white;
         }
 
-        #available-books-btn:hover {
+        #active-customers:hover {
             background-color: #2980b9; /* Darker Blue */
         }
 
@@ -109,21 +109,22 @@
 </head>
 <body>
   
-    <button onclick="showUnavailableBooks()" id="deleted-books-btn">Deleted Books</button>
-    <button onclick="refreshContent()" id="available-books-btn">Available Books</button>
+    <button onclick="getInactiveCustomers()" id="inactive-customers">Inactive Customers</button>
+    <button onclick="refreshContent()" id="active-customers">Active Customers</button>
     
     <div class="container table-container">
-        <h1 class="text-center my-4">Books List</h1>
+        <h1 class="text-center my-4">Customers List</h1>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Title</th>
-                    <th>Author</th>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>Age</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="books-table-body">
+            <tbody id="customers-table-body">
                 <!-- JavaScript will populate this -->
             </tbody>
         </table>
