@@ -48,6 +48,11 @@ const changeContent = (contentType) => {
         console.log("Loading edit_customer.html...");
         loadContentFromFile('static/edit-customer.html');
     }
+    else if (contentType === 'display-loans') {
+        console.log("Loading display-loans.html...");
+        loadContentFromFile('static/display-loans.html');
+        window.load_loans()
+    }
     else {
         // Handle other content types if needed
         const content = '<h4>This is static content</h4>';

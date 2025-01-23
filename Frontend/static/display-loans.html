@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books Management</title>
+    <title>Loans Management</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     
@@ -73,7 +73,7 @@
         opacity: 0.5;
         }
         /* Style for both buttons */
-        #deleted-books-btn, #available-books-btn {
+        #late-loans-btn, #active-loans-btn {
             padding: 8px 15px;
             font-size: 14px;
             border: none;
@@ -84,22 +84,22 @@
         }
 
         /* Specific styles for "Deleted Books" button */
-        #deleted-books-btn {
+        #late-loans-btn {
             background-color: #e74c3c; /* Red */
             color: white;
         }
 
-        #deleted-books-btn:hover {
+        #late-loans-btn:hover {
             background-color: #c0392b; /* Darker Red */
         }
 
         /* Specific styles for "Available Books" button */
-        #available-books-btn {
+        #active-loans-btn {
             background-color: #3498db; /* Blue */
             color: white;
         }
 
-        #available-books-btn:hover {
+        #active-loans-btn:hover {
             background-color: #2980b9; /* Darker Blue */
         }
 
@@ -108,19 +108,28 @@
     </style>
 </head>
 <body>
-  
-    <button onclick="getUnavailableBooks()" id="deleted-books-btn">Deleted Books</button>
-    <button onclick="refreshContent()" id="available-books-btn">Available Books</button>
+    
+    
+    <button onclick="getLoanHistory()" id="late-loans-btn">loans History</button>
+    <button onclick="getReturnedLoans()" id="late-loans-btn">returned loans</button>
+    <button onclick="getLateLoans()" id="active-loans-btn">late loans</button>
+    <button onclick="refreshContent()" id="active-loans-btn">active loans</button>
+
+    
     
     <div class="container table-container">
-        <h1 class="text-center my-4">Books List</h1>
+        <h1 id="loan-title" class="text-center my-4">Loans List</h1>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Actions</th>
+                    <th>customer</th>
+                    <th>book</th>
+                    <th>loan date</th>
+                    <th>return date</th>
+                    <th>Status</th>
+
+
                 </tr>
             </thead>
             <tbody id="books-table-body">

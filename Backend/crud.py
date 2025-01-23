@@ -3,6 +3,7 @@ from models import *
 from db import db_session 
 from datetime import date, datetime, timedelta
 from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 
 #CRUD BOOKS
 def add_new_book(bookName, bookAuthor, yearPublished, bookType, bookGenre):
@@ -293,7 +294,6 @@ def loan_book(customer_id, book_id, loan_date):
         loaned_book.available = False
 
         new_loan = Loan(customer_id=customer_id, book_id=book_id, loan_date=loan_date, return_date=return_date)
-        db_session.add(loaned_book)
         db_session.add(new_loan)
         db_session.commit()
 
@@ -302,33 +302,66 @@ def loan_book(customer_id, book_id, loan_date):
 
 #display all loans ever made
 def display_all_loans():
-    loaned_books = db_session.query(Loan).all()
+    loaned_books = db_session.query(Loan).options(joinedload(Loan.customer), joinedload(Loan.book)).all()
     loaned_books_list = []
 
     for loan in loaned_books:
+        customer = db_session.query(Customer).filter_by(id=loan.customer_id).first()
+        book = db_session.query(Book).filter_by(id=loan.book_id).first()
+
+        if customer:
+            customer_name = customer.name
+        else:
+            customer_name = "Unknown"
+        
+        if book:
+            book_name = book.name
+        else:
+            book_name = "Unknown"
+
+        formatted_loan_date = loan.loan_date.strftime('%a, %d %b %Y') if loan.loan_date else "Unknown"
+        formatted_return_date = loan.return_date.strftime('%a, %d %b %Y') if loan.return_date else "Unknown"
+
         loaned_books_data = {
             "loan_id": loan.loan_id, 
-            "customer_id": loan.customer_id,
-            "book_id" : loan.book_id,
-            "loan_date": loan.loan_date,
-            "return_date": loan.return_date,
+            "customer": customer_name,
+            "book": book_name,
+            "loan_date": formatted_loan_date,
+            "return_date": formatted_return_date,
             "is_returned" : loan.is_returned
         }
         loaned_books_list.append(loaned_books_data)
+
     return loaned_books_list
 
 #display only loans with is_returned = false
 def display_loaned_books():
-    active_loans = db_session.query(Loan).filter_by(is_returned=False).all()
+    active_loans = db_session.query(Loan).filter_by(is_returned=False).options(joinedload(Loan.customer), joinedload(Loan.book)).all()
     active_loans_list = []
 
     for loan in active_loans:
+        customer = db_session.query(Customer).filter_by(id=loan.customer_id).first()
+        book = db_session.query(Book).filter_by(id=loan.book_id).first()
+
+        if customer:
+            customer_name = customer.name
+        else:
+            customer_name = "Unknown"
+        
+        if book:
+            book_name = book.name
+        else:
+            book_name = "Unknown"
+
+        formatted_loan_date = loan.loan_date.strftime('%a, %d %b %Y') if loan.loan_date else "Unknown"
+        formatted_return_date = loan.return_date.strftime('%a, %d %b %Y') if loan.return_date else "Unknown"
+
         loaned_books_data = {
             "loan_id": loan.loan_id, 
-            "customer_id": loan.customer_id,
-            "book_id" : loan.book_id,
-            "loan_date": loan.loan_date,
-            "return_date": loan.return_date,
+            "customer": customer_name,
+            "book_id" : book_name,
+            "loan_date": formatted_loan_date,
+            "return_date": formatted_return_date,
             "is_returned" : loan.is_returned
         }
         active_loans_list.append(loaned_books_data)
@@ -336,16 +369,32 @@ def display_loaned_books():
 #return a book - change availablity form fale to true, 
 
 def display_returned_loans():
-    returned_loans = db_session.query(Loan).filter_by(is_returned=True).all()
+    returned_loans = db_session.query(Loan).filter_by(is_returned=True).options(joinedload(Loan.customer), joinedload(Loan.book)).all()
     returned_loans_list = []
 
     for loan in returned_loans:
+        customer = db_session.query(Customer).filter_by(id=loan.customer_id).first()
+        book = db_session.query(Book).filter_by(id=loan.book_id).first()
+
+        if customer:
+            customer_name = customer.name
+        else:
+            customer_name = "Unknown"
+        
+        if book:
+            book_name = book.name
+        else:
+            book_name = "Unknown"
+        
+        formatted_loan_date = loan.loan_date.strftime('%a, %d %b %Y') if loan.loan_date else "Unknown"
+        formatted_return_date = loan.return_date.strftime('%a, %d %b %Y') if loan.return_date else "Unknown"
+
         loaned_books_data = {
             "loan_id": loan.loan_id, 
-            "customer_id": loan.customer_id,
-            "book_id" : loan.book_id,
-            "loan_date": loan.loan_date,
-            "return_date": loan.return_date,
+            "customer": customer_name,
+            "book": book_name,
+            "loan_date": formatted_loan_date,
+            "return_date": formatted_return_date,
             "is_returned" : loan.is_returned
         }
         returned_loans_list.append(loaned_books_data)
@@ -367,19 +416,35 @@ def return_book():
 def display_late_loans():
     
     current_date = date.today()
-    late_loans = db_session.query(Loan).filter(Loan.is_returned == False).all()
+    late_loans = db_session.query(Loan).filter(Loan.is_returned == False).options(joinedload(Loan.customer), joinedload(Loan.book)).all()
 
     late_loans_list = []
 
     
     for loan in late_loans:
+        customer = db_session.query(Customer).filter_by(id=loan.customer_id).first()
+        book = db_session.query(Book).filter_by(id=loan.book_id).first()
+
+        if customer:
+            customer_name = customer.name
+        else:
+            customer_name = "Unknown"
+        
+        if book:
+            book_name = book.name
+        else:
+            book_name = "Unknown"
+        
+        formatted_loan_date = loan.loan_date.strftime('%a, %d %b %Y') if loan.loan_date else "Unknown"
+        formatted_return_date = loan.return_date.strftime('%a, %d %b %Y') if loan.return_date else "Unknown"
+
         if loan.return_date < current_date:
             loan_data = {
                 "loan_id": loan.loan_id,
-                "customer_id": loan.customer_id,
-                "book_id": loan.book_id,
-                "loan_date": loan.loan_date,
-                "return_date": loan.return_date,
+                "customer": customer_name,
+                "book": book_name,
+                "loan_date": formatted_loan_date,
+                "return_date": formatted_return_date,
                 "is_returned": loan.is_returned
             }
             late_loans_list.append(loan_data)

@@ -61,7 +61,7 @@
                             <ul class="nav flex-column pl-3">
                                 <li onclick="changeContent('add-customer')" class="nav-item"><a class="nav-link" href="#">Add Customer</a></li>
                                 <li onclick="changeContent('display-customers')" class="nav-item"><a class="nav-link" href="#">All Customers</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">Delete Customer</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#"></a></li>
                             </ul>
                         </div>
                     </li>
@@ -73,9 +73,7 @@
                         </a>
                         <div id="manageLoans" class="collapse">
                             <ul class="nav flex-column pl-3">
-                                <li class="nav-item"><a class="nav-link" href="#">Issue Loan</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">Return Loan</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">View Loans</a></li>
+                                <li onclick="changeContent('display-loans')" class="nav-item"><a class="nav-link" href="#">All loans</a></li>
                             </ul>
                         </div>
                     </li>
@@ -101,6 +99,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="static/manage_books.js"></script>
     <script src="static/manage_customers.js"></script>
+    <script src="static/manage_loans.js"></script>
+    
     
 
 </body>

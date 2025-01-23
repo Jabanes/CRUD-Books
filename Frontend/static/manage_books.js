@@ -48,6 +48,18 @@ window.load_books = () => axios.get('http://127.0.0.1:5000/books')
     })
     .catch(error => console.error('Error fetching books:', error));
 
+
+
+
+window.load_loans = () => axios.get('http://127.0.0.1:5000/loans')
+.then(response => {
+    console.log(`LOansssssssssssssssss ${response.data}`);
+    const loans = response.data;
+    displayActiveLoans(loans)
+})
+.catch(error => console.error('Error fetching customers:', error));
+
+
 const display_books = (books) => {
     const tableBody = document.getElementById('books-table-body');
     books.forEach((book, index) => {
@@ -87,11 +99,12 @@ function viewBook(bookId) {
         .then(response => {
             // Assuming the response contains the book data
             const book = response.data;
+            
             if (book.message) {
                 // Handle the case when no book is found (message is returned)
                 alert(book.message);
             } else {
-                // If the book data is found, dynamically update the book details page
+                currentBookId = book.id
                 loadBookDetails(book);
             }
         })
@@ -123,7 +136,7 @@ function loadBookForEditing(bookId) {
     axios.get(`/books?book_id=${bookId}`)
         .then(response => {
             const book = response.data;
-            console.log("editing book:");
+            console.log(`editing book: ${book}`);
         })
         .then(() => {
             changeContent("edit_book-content");
@@ -234,4 +247,232 @@ const restoreBook = (bookId) => {
                 alert(`Book has been Restored successfully!`, response.data);
             })
     }
-}   
+}  
+
+const loanbook = (book_id) => {
+    
+    book_id = currentBookId
+    console.log("Attempting to loan a book...");
+    console.log(book_id);
+    
+    
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    let todaysDate = `${day}-${month}-${year}`
+    let customerId = 1     // change this when implementing user auth
+    
+
+    loanData = {
+        "customer_id" : customerId,
+        "book_id" : book_id,
+        "loan_date" : todaysDate
+    }
+
+    axios.post('http://127.0.0.1:5000/loans', loanData).then(response => {
+        
+        const loan = response.data;
+        if (loan.message) {
+            // Handle the case when no book is found (message is returned)
+            alert(loan.message);
+        } else {
+            // If the book data is found, dynamically update the book details page
+            loadBookDetails(loan);
+        }
+    })
+    .catch(error => {
+        console.error("loan failed...", error);
+    });
+    
+}
+
+const displayActiveLoans = (activeLoans) =>{
+    const tableBody = document.getElementById('books-table-body');
+    tableBody.innerHTML = '';
+    const title = document.getElementById('loan-title');
+    title.innerHTML = 'Active Loans'
+    let status = '';
+    activeLoans.forEach((loan, index) => {
+        const row = document.createElement('tr');
+
+        if (loan.is_returned) {
+            row.style.opacity = '0.5';
+            status = "Returned"
+        }
+
+        if (!loan.is_returned) {
+            status = "Active"
+        }
+        row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${loan.customer}</td>
+                <td>${loan.book_id}</td>
+                <td>${loan.loan_date}</td>
+                <td>${loan.return_date}</td>
+                <td>${status}</td>
+                <td>
+                    <div class="options-menu">
+                        <button class="btn btn-light">+</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item text-success" href="#" onclick="returnLoan(${loan.id})">Return</a>
+                        </div>
+                    </div>
+                </td>
+            `;
+        tableBody.appendChild(row);
+    });
+}
+
+const displayLateLoans = (late_loans) => {
+    const tableBody = document.getElementById('books-table-body');
+    const title = document.getElementById('loan-title');
+    title.innerHTML = 'Late Loans'
+    tableBody.innerHTML = '';
+    let status = '';
+    late_loans.forEach((loan, index) => {
+        const row = document.createElement('tr');
+
+        if (loan.is_returned) {
+            row.style.opacity = '0.6';
+            status = "Returned"
+        }
+
+        if (!loan.is_returned) {
+            row.style.color = 'red'
+            status = "Active"
+        }
+        row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${loan.customer}</td>
+                <td>${loan.book_id}</td>
+                <td>${loan.loan_date}</td>
+                <td>${loan.return_date}</td>
+                <td>${status}</td>
+                <td>
+                    <div class="options-menu">
+                        <button class="btn btn-light">+</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item text-success" href="#" onclick="returnLoan(${loan.id})">Return</a>
+                        </div>
+                    </div>
+                </td>
+            `;
+        tableBody.appendChild(row);
+    });
+}
+
+getLateLoans = () => {
+    axios.get("http://127.0.0.1:5000/loans?filter=late")
+    .then(response => {
+        late_loans = response.data
+        console.log('late loans:', late_loans);
+        displayLateLoans(late_loans)
+    })
+    .catch(error => {
+        console.error('Error fetching late loans:', error);
+    });
+}
+
+getReturnedLoans = () => {
+    axios.get("http://127.0.0.1:5000/loans?filter=returned")
+    .then(response => {
+        returned_loans = response.data
+        console.log('late loans:', returned_loans);
+        displayReturnedLoans(returned_loans)
+    })
+    .catch(error => {
+        console.error('Error fetching late loans:', error);
+    });
+}
+
+const displayReturnedLoans = (returned_loans) => {
+    const tableBody = document.getElementById('books-table-body');
+    const title = document.getElementById('loan-title');
+    title.innerHTML = 'Returned Loans'
+    tableBody.innerHTML = '';
+    let status = '';
+    returned_loans.forEach((loan, index) => {
+        const row = document.createElement('tr');
+
+        if (loan.is_returned) {
+            row.style.opacity = '0.7';
+            row.style.color = 'green';
+            status = "Returned"
+        }
+
+        if (!loan.is_returned) {
+            status = "Active"
+        }
+        row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${loan.customer}</td>
+                <td>${loan.book_id}</td>
+                <td>${loan.loan_date}</td>
+                <td>${loan.return_date}</td>
+                <td>${status}</td>
+            `;
+        tableBody.appendChild(row);
+    });
+}
+
+getLoanHistory = () => {
+    axios.get("http://127.0.0.1:5000/loans?filter=history")
+    .then(response => {
+        loans_history = response.data
+        console.log('late loans:', loans_history);
+        displayLoansHistory(loans_history)
+    })
+    .catch(error => {
+        console.error('Error fetching late loans:', error);
+    });
+}
+
+const displayLoansHistory = async (all_loans) =>{
+    const tableBody = document.getElementById('books-table-body');
+    const title = document.getElementById('loan-title');
+    title.innerHTML =  'Loans History'
+    tableBody.innerHTML = '';
+    let status = '';
+    const late_loans_list = await lateLoans();
+
+    all_loans.forEach((loan, index) => {
+        const row = document.createElement('tr');
+
+        if (loan.is_returned) {
+            row.style.opacity = '0.7';
+            row.style.color = 'green';
+            status = "Returned"
+        }
+
+        else if (!loan.is_returned && late_loans_list.some(lateLoan => lateLoan.loan_id === loan.loan_id)) {
+            status = "Active, Late"
+            row.style.color = 'red';
+        }
+
+        else {
+            status = "Active"
+        }
+        
+        row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${loan.customer}</td>
+                <td>${loan.book_id}</td>
+                <td>${loan.loan_date}</td>
+                <td>${loan.return_date}</td>
+                <td>${status}</td>
+            `;
+        tableBody.appendChild(row);
+    });
+}
+
+const lateLoans = async () => {
+    try {
+        const response = await axios.get("http://127.0.0.1:5000/loans?filter=late");
+        return response.data; // Return the list of late loans
+    } catch (error) {
+        console.error('Error fetching late loans:', error);
+        return []; // Return an empty list in case of error
+    }
+};
