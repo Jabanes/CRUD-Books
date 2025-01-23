@@ -136,7 +136,7 @@ const loadCustomerForEditing =(customerId) => {
             changeContent("edit_customer-content");
         })
         .catch(error => {
-            console.error('Error loading book data:', error);
+            console.error('Error loading customer data:', error);
         });
 
 }
@@ -159,7 +159,7 @@ const editcustomer = () =>{
         .then(response => {
             console.log('Customer updated successfully:', response.data);
             alert('Customer updated successfully!');
-            // Optionally, redirect to the book list or another page
+            // Optionally, redirect to the customer list or another page
         })
         .catch(error => {
             console.error('Error updating Customer:', error);
@@ -235,4 +235,73 @@ const restoreCustomer = (customerId) => {
                 alert(`Customer has been Restored successfully!`, response.data);
             })
     }
+}
+
+const getCustomerResult= (customers, query = '') => {
+    const tableBody = document.getElementById('customers-table-body');
+    tableBody.innerHTML = ''; // Clear the table before displaying new data
+
+    // Convert the query to lowercase for case-insensitive comparison
+    const lowerCaseQuery = query.toLowerCase();
+
+    // Filter customers based on the query (if provided)
+    const filteredCustomers = customers.filter(customer => 
+        customer.name.toLowerCase().includes(lowerCaseQuery) ||
+        customer.city.toLowerCase().includes(lowerCaseQuery) ||
+        customer.age.toString().includes(lowerCaseQuery)
+    );
+
+    // Check if there are any matching customers
+    if (filteredCustomers.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center">No customers found</td>
+            </tr>
+        `;
+        return;
+    }
+
+    // Display the filtered customers
+    filteredCustomers.forEach((customer, index) => {
+        const row = document.createElement('tr');
+
+        if (!customer.active) {
+            row.style.opacity = '0.5';
+        }
+
+        row.innerHTML = `
+                <td>#</td>
+                <td>${customer.name}</td>
+                <td>${customer.city}</td>
+                <td>${customer.age}</td>
+                <td>
+                    <div class="tooltip-container">
+                        <a href="#" class="view-icon" onclick="viewCustomer(${customer.id})">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <span class="tooltip-text">View Customer</span>
+                    </div>
+                    <div class="options-menu">
+                        <button class="btn btn-light">+</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item text-success" href="#" onclick="restoreCustomer(${customer.id})">Restore</a>
+                        </div>
+                    </div>
+                </td>
+            `;
+        tableBody.appendChild(row);
+    });
+};
+
+const searchCustomer =() => {
+    axios.get('http://127.0.0.1:5000/customers')
+    .then(response => {
+        console.log(response.data);
+        const customers = response.data;
+        const query = document.getElementById('search-bar').value.trim();
+        getCustomerResult(customers, query); 
+    })
+
+    .catch(error => console.error('Error fetching customers:', error));
+    
 }

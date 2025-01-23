@@ -288,6 +288,76 @@ const loanbook = (book_id) => {
     
 }
 
+const getBookResult= (books, query = '') => {
+    const tableBody = document.getElementById('books-table-body');
+    tableBody.innerHTML = ''; // Clear the table before displaying new data
+
+    // Convert the query to lowercase for case-insensitive comparison
+    const lowerCaseQuery = query.toLowerCase();
+
+    // Filter books based on the query (if provided)
+    const filteredBooks = books.filter(book => 
+        book.name.toLowerCase().includes(lowerCaseQuery) ||
+        book.author.toLowerCase().includes(lowerCaseQuery)
+    );
+
+    // Check if there are any matching books
+    if (filteredBooks.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center">No books found</td>
+            </tr>
+        `;
+        return;
+    }
+
+    // Display the filtered books
+    filteredBooks.forEach((book, index) => {
+        const row = document.createElement('tr');
+
+        if (!book.available) {
+            row.style.opacity = '0.5';
+        }
+
+        row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${book.name}</td>
+                <td>${book.author}</td>
+                <td>
+                    <div class="tooltip-container">
+                        <a href="#" class="view-icon" onclick="viewBook(${book.id})">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <span class="tooltip-text">View Book</span>
+                    </div>
+                    <div class="options-menu">
+                        <button class="btn btn-light">⋮</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" onclick="loadBookForEditing(${book.id})">Edit</a>
+                            <a class="dropdown-item text-danger" href="#" onclick="deleteBook(${book.id})">Delete</a>
+                        </div>
+                    </div>
+                </td>
+            `;
+        tableBody.appendChild(row);
+    });
+};
+
+const searchBook =() => {
+    axios.get('http://127.0.0.1:5000/books')
+    .then(response => {
+        console.log(response.data);
+        const books = response.data;
+        const query = document.getElementById('search-bar').value.trim();
+        getBookResult(books, query); 
+    })
+
+    .catch(error => console.error('Error fetching books:', error));
+    
+}
+//-----------------------------------------------------------------------------------------------------
+
+
 const displayActiveLoans = (activeLoans) =>{
     const tableBody = document.getElementById('books-table-body');
     tableBody.innerHTML = '';
@@ -316,7 +386,7 @@ const displayActiveLoans = (activeLoans) =>{
                     <div class="options-menu">
                         <button class="btn btn-light">+</button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item text-success" href="#" onclick="returnLoan(${loan.id})">Return</a>
+                            <a class="dropdown-item text-success" href="#" onclick="returnLoan(${loan.loan_id})">Return</a>
                         </div>
                     </div>
                 </td>
@@ -454,7 +524,7 @@ const displayLoansHistory = async (all_loans) =>{
         else {
             status = "Active"
         }
-        
+
         row.innerHTML = `
                 <td>${index + 1}</td>
                 <td>${loan.customer}</td>
@@ -476,3 +546,16 @@ const lateLoans = async () => {
         return []; // Return an empty list in case of error
     }
 };
+
+const returnLoan = (loan_id) =>{
+    const confirmed = confirm(`Are you sure you want to mark this loan as returned?`);
+    if (confirmed) {
+        console.log(loan_id);
+        axios.delete(`/loans`, {
+            data: { loan_id: loan_id }
+        })
+        .then(response => {
+            alert(`loan has been returned successfully!`, response.data);
+        })
+    
+}}

@@ -83,7 +83,7 @@
             margin-right: 10px;
         }
 
-        /* Specific styles for "Deleted Books" button */
+        /* Specific styles for "Deleted Customers" button */
         #inactive-customers {
             background-color: #e74c3c; /* Red */
             color: white;
@@ -93,7 +93,7 @@
             background-color: #c0392b; /* Darker Red */
         }
 
-        /* Specific styles for "Available Books" button */
+        /* Specific styles for "Available Customers" button */
         #active-customers {
             background-color: #3498db; /* Blue */
             color: white;
@@ -102,7 +102,10 @@
         #active-customers:hover {
             background-color: #2980b9; /* Darker Blue */
         }
-
+        #search-bar {
+            max-width: 400px;
+            margin: 0 auto;
+        }
         
             
     </style>
@@ -111,7 +114,15 @@
   
     <button onclick="getInactiveCustomers()" id="inactive-customers">Inactive Customers</button>
     <button onclick="refreshContent()" id="active-customers">Active Customers</button>
-    
+    <div class="container table-container">
+        <h1 class="text-center my-4">Customers List</h1>
+        <div class="input-group mb-3 justify-content-center" style="max-width: 400px; margin: 0 auto;">
+            <input type="text" id="search-bar" class="form-control" placeholder="Search for a Customer by name, city or age">
+            <div class="input-group-append">
+                <button class="btn btn-primary" onclick="searchCustomer()">Search</button>
+            </div>
+        </div>
+
     <div class="container table-container">
         <h1 class="text-center my-4">Customers List</h1>
         <table class="table table-striped">

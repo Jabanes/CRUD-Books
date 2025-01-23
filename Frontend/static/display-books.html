@@ -102,6 +102,10 @@
         #available-books-btn:hover {
             background-color: #2980b9; /* Darker Blue */
         }
+        #search-bar {
+            max-width: 400px;
+            margin: 0 auto;
+        }
 
         
             
@@ -114,6 +118,12 @@
     
     <div class="container table-container">
         <h1 class="text-center my-4">Books List</h1>
+        <div class="input-group mb-3 justify-content-center" style="max-width: 400px; margin: 0 auto;">
+            <input type="text" id="search-bar" class="form-control" placeholder="Search for a book by title, or author">
+            <div class="input-group-append">
+                <button class="btn btn-primary" onclick="searchBook()">Search</button>
+            </div>
+        </div>
         <table class="table table-striped">
             <thead>
                 <tr>
