@@ -134,7 +134,7 @@ const loadCustomerDetails = (customer)=> {
 const loadCustomerForEditing =(customerId) => {
     currentCustomerId = customerId;
    
-    axios.get(`/customers?customer_id=${customerId}`)
+    axios.get(`http://127.0.0.1:5000/customers?customer_id=${customerId}`)
         .then(() => {
             changeContent("edit_customer-content");
         })
@@ -158,7 +158,7 @@ const editcustomer = () =>{
     };
 
     // Send the PUT request
-    axios.put(`/customers`, updatedCustomer)
+    axios.put(`http://127.0.0.1:5000/customers`, updatedCustomer)
         .then(response => {
             console.log('Customer updated successfully:', response.data);
             alert('Customer updated successfully!');

@@ -45,7 +45,6 @@ window.load_books = () => axios.get('http://127.0.0.1:5000/books')
         console.log(response.data);
         const books = response.data;
         display_books(books)
-        updateCarouselWithRandomBook(books);
     })
     .catch(error => console.error('Error fetching books:', error));
 
@@ -134,7 +133,7 @@ function loadBookDetails(book) {
 
 function loadBookForEditing(bookId) {
     currentBookId = bookId;
-    axios.get(`/books?book_id=${bookId}`)
+    axios.get(`http://127.0.0.1:5000/books?book_id=${bookId}`)
         .then(response => {
             const book = response.data;
             console.log(`editing book: ${book}`);
@@ -168,7 +167,7 @@ function editBook() {
     };
 
     // Send the PUT request
-    axios.put(`/books`, updatedBook)
+    axios.put(`http://127.0.0.1:5000/books`, updatedBook)
         .then(response => {
             console.log('Book updated successfully:', response.data);
             alert('Book updated successfully!');
@@ -562,14 +561,3 @@ const returnLoan = (loan_id) =>{
     
 }}
 
-const updateCarouselWithRandomBook = (books) => {
-    const randomIndex = Math.floor(Math.random() * books.length);
-    const randomBook = books[randomIndex];
-
-    
-    const carouselItem = document.querySelector('.carousel-item.active');
-    if (carouselItem && randomBook) {
-        carouselItem.querySelector('img').src = '/static/book.jpg'
-        carouselItem.querySelector('h5').textContent = randomBook.name; 
-    }
-};
