@@ -171,17 +171,19 @@ const  deleteCustomer = (customerId) => {
     const confirmed = confirm(`Are you sure you want to delete this customer?`);
     if (confirmed) {
         console.log(customerId);
-        axios.delete(`/customers`, {
+        axios.delete(`http://127.0.0.1:5000/customers`, {
             data: { id: customerId }
         })
-            .then(response => {
-                alert(`Customer has been deleted successfully!`, response.data);
-            })
+
+        .then(response => {
+            alert(`Customer has been deleted successfully!`, response.data);
+            
+        })
     }
 }
 
 getInactiveCustomers = () => {
-    axios.get('/customers?filter=inactive')
+    axios.get('http://127.0.0.1:5000/customers?filter=inactive')
         .then(response => {
             inactive_customers = response.data
             console.log('Unavailable Customers:', inactive_customers);
@@ -228,12 +230,12 @@ const displayInactiveCustomers = (inactive_customers) => {
 const restoreCustomer = (customerId) => {
     const confirmed = confirm(`Restore Customer?`);
     if (confirmed) {
-        axios.delete(`/customers?action=restore`, {
+        axios.delete(`http://127.0.0.1:5000/customers?action=restore`, {
             data: { id: customerId }
         })
-            .then(response => {
-                alert(`Customer has been Restored successfully!`, response.data);
-            })
+        .then(response => {
+            alert(`Customer has been Restored successfully!`, response.data);
+        })
     }
 }
 

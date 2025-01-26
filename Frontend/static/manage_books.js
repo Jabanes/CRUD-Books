@@ -183,7 +183,7 @@ function deleteBook(bookId) {
     const confirmed = confirm(`Are you sure you want to delete this book?`);
     if (confirmed) {
         console.log(bookId);
-        axios.delete(`/books`, {
+        axios.delete(`http://127.0.0.1:5000/books`, {
             data: { id: bookId }
         })
             .then(response => {
@@ -193,7 +193,7 @@ function deleteBook(bookId) {
 }
 
 getUnavailableBooks = () => {
-    axios.get('/books?filter=unavailable')
+    axios.get('http://127.0.0.1:5000/books?filter=unavailable')
         .then(response => {
             unavailable_books = response.data
             console.log('Unavailable books:', unavailable_books);
@@ -551,7 +551,7 @@ const returnLoan = (loan_id) =>{
     const confirmed = confirm(`Are you sure you want to mark this loan as returned?`);
     if (confirmed) {
         console.log(loan_id);
-        axios.delete(`/loans`, {
+        axios.delete(`http://127.0.0.1:5000/loans`, {
             data: { loan_id: loan_id }
         })
         .then(response => {
