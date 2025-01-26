@@ -115,7 +115,7 @@
     <button onclick="getInactiveCustomers()" id="inactive-customers">Inactive Customers</button>
     <button onclick="refreshContent()" id="active-customers">Active Customers</button>
     <div class="container table-container">
-        <h1 class="text-center my-4">Customers List</h1>
+        <h1 id="customers-title" class="text-center my-4">Customers List</h1>
         <div class="input-group mb-3 justify-content-center" style="max-width: 400px; margin: 0 auto;">
             <input type="text" id="search-bar" class="form-control" placeholder="Search for a Customer by name, city or age">
             <div class="input-group-append">
@@ -124,7 +124,6 @@
         </div>
 
     <div class="container table-container">
-        <h1 class="text-center my-4">Customers List</h1>
         <table class="table table-striped">
             <thead>
                 <tr>

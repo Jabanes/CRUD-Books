@@ -45,6 +45,7 @@ window.load_books = () => axios.get('http://127.0.0.1:5000/books')
         console.log(response.data);
         const books = response.data;
         display_books(books)
+        updateCarouselWithRandomBook(books);
     })
     .catch(error => console.error('Error fetching books:', error));
 
@@ -53,7 +54,6 @@ window.load_books = () => axios.get('http://127.0.0.1:5000/books')
 
 window.load_loans = () => axios.get('http://127.0.0.1:5000/loans')
 .then(response => {
-    console.log(`LOansssssssssssssssss ${response.data}`);
     const loans = response.data;
     displayActiveLoans(loans)
 })
@@ -62,6 +62,7 @@ window.load_loans = () => axios.get('http://127.0.0.1:5000/loans')
 
 const display_books = (books) => {
     const tableBody = document.getElementById('books-table-body');
+    document.getElementById('books-title').innerHTML = 'Available Books:'
     books.forEach((book, index) => {
         const row = document.createElement('tr');
 
@@ -95,7 +96,7 @@ const display_books = (books) => {
 
 function viewBook(bookId) {
     changeContent('view_book-content')
-    axios.get(`/books?book_id=${bookId}`)
+    axios.get(`http://127.0.0.1:5000/books?book_id=${bookId}`)
         .then(response => {
             // Assuming the response contains the book data
             const book = response.data;
@@ -206,6 +207,7 @@ getUnavailableBooks = () => {
 
 const display_unavailable_books = (unavailable_books) => {
     const tableBody = document.getElementById('books-table-body');
+    document.getElementById('books-title').innerHTML = 'Unavailable Books:'
     tableBody.innerHTML = '';
     unavailable_books.forEach((book) => {
         const row = document.createElement('tr');
@@ -559,3 +561,15 @@ const returnLoan = (loan_id) =>{
         })
     
 }}
+
+const updateCarouselWithRandomBook = (books) => {
+    const randomIndex = Math.floor(Math.random() * books.length);
+    const randomBook = books[randomIndex];
+
+    
+    const carouselItem = document.querySelector('.carousel-item.active');
+    if (carouselItem && randomBook) {
+        carouselItem.querySelector('img').src = '/static/book.jpg'
+        carouselItem.querySelector('h5').textContent = randomBook.name; 
+    }
+};

@@ -61,6 +61,7 @@ window.load_customers = () => axios.get('http://127.0.0.1:5000/customers')
 
 const display_customers = (customers) => {
     const tableBody = document.getElementById('customers-table-body');
+    document.getElementById('customers-title').innerHTML = 'Active Customers'
     customers.forEach((customer, index) => {
         const row = document.createElement('tr');
 
@@ -95,10 +96,10 @@ const display_customers = (customers) => {
 }
 
 const viewCustomer = (customerId) => {
+    currentCustomerId = customerId
     changeContent('view_customer-content')
-    axios.get(`/customers?customer_id=${customerId}`)
+    axios.get(`http://127.0.0.1:5000/customers?customer_id=${customerId}`)
         .then(response => {
-            // Assuming the response contains the customer data
             console.log(response.data);
             const customer = response.data;
             if (customer.message) {
@@ -111,6 +112,7 @@ const viewCustomer = (customerId) => {
         })
         .catch(error => {
             console.error("Error fetching customer data:", error);
+            console.log(`Current customer id = ${customerId}`);
         });
 }
 
@@ -131,6 +133,7 @@ const loadCustomerDetails = (customer)=> {
 
 const loadCustomerForEditing =(customerId) => {
     currentCustomerId = customerId;
+   
     axios.get(`/customers?customer_id=${customerId}`)
         .then(() => {
             changeContent("edit_customer-content");
@@ -196,6 +199,7 @@ getInactiveCustomers = () => {
 
 const displayInactiveCustomers = (inactive_customers) => {
     const tableBody = document.getElementById('customers-table-body');
+    document.getElementById('customers-title').innerHTML = 'Inactive Customers';
     tableBody.innerHTML = '';
     inactive_customers.forEach((customer) => {
         const row = document.createElement('tr');
